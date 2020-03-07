@@ -1,3 +1,4 @@
+import {randomColor as randomAttractiveColor} from 'randomcolor/randomColor.js';
 import * as twgl from 'twgl.js';
 
 window.showHUD = false;
@@ -73,8 +74,15 @@ export function degToRad(degrees) {
   return degrees * Math.PI / 180;
 }
 
-export function randomColor() {
-  return twgl.v3.create(Math.random(), Math.random(), Math.random());
+export function randomColor(hue) {
+  const args = {format: 'rgbArray'};
+  if (hue !== undefined) {
+    args.hue = hue;
+  }
+  const color = randomAttractiveColor(args);
+  const colorVec =
+      twgl.v3.create(color[0] / 255, color[1] / 255, color[2] / 255);
+  return colorVec;
 }
 
 /* ======== Private functions ======== */
