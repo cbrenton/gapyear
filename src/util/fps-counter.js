@@ -49,16 +49,33 @@ export function logFrame(textContext) {
   }
 }
 
-function drawFPS(textContext, renderTime) {
+function drawFPS(ctx, renderTime) {
   const fps = parseInt(1000.0 / renderTime);
-  const yOffset = textContext.canvas.clientHeight - 10;
 
   // Resize overlay to true size (makes text smaller and sharper)
-  textContext.canvas.width = textContext.canvas.clientWidth;
-  textContext.canvas.height = textContext.canvas.clientHeight;
+  ctx.canvas.width = ctx.canvas.clientWidth;
+  ctx.canvas.height = ctx.canvas.clientHeight;
+
   // Clear the overlay canvas
-  textContext.clearRect(
-      0, 0, textContext.canvas.width, textContext.canvas.height);
-  // Write text to overlay
-  textContext.fillText(`${renderTime} ms / ${fps} fps`, 10, yOffset);
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  const displayStr = `${renderTime} ms / ${fps} fps`;
+  const text = ctx.measureText(displayStr);
+
+  // Calculate text bounds
+  const textHeight =
+      text.actualBoundingBoxAscent + text.actualBoundingBoxDescent;
+  const xOffset = 10;
+  const yOffset = ctx.canvas.clientHeight - textHeight - 5;
+  const yBuffer = 4;
+  const xBuffer = 2;
+
+  // Draw white rect
+  ctx.fillStyle = 'white';
+  ctx.fillRect(
+      xOffset - xBuffer / 2, yOffset - textHeight - yBuffer / 2,
+      text.width + xBuffer, textHeight + yBuffer);
+
+  // Draw black text
+  ctx.fillStyle = 'black';
+  ctx.fillText(displayStr, xOffset, yOffset);
 }
