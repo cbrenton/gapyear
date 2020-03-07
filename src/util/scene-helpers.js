@@ -73,6 +73,10 @@ export function degToRad(degrees) {
   return degrees * Math.PI / 180;
 }
 
+export function randomColor() {
+  return twgl.v3.create(Math.random(), Math.random(), Math.random());
+}
+
 /* ======== Private functions ======== */
 
 function initGL(canvas) {

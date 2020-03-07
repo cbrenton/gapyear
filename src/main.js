@@ -53,7 +53,6 @@ function createScene(gl) {
   const planeTransform = m4.translation([0, -1, 0]);
   m4.scale(planeTransform, [10, 10, 10], planeTransform);
   const planeMat = new Material();
-  planeMat.color.diffuse = v3.create(0, 0, 1);
   const plane = new Primitive('plane', phongInfo, planeMat, planeTransform);
   graph.addGeom(plane);
 

@@ -1,13 +1,15 @@
 'use strict';
 
 import {v3} from 'twgl.js';
+import {randomColor} from 'util/scene-helpers.js';
 
 class Material {
   constructor() {
+    const defaultColor = randomColor();
     this.color = {
-      diffuse: v3.create(1, 1, 0),
-      specular: v3.create(1, 1, 0),
-      ambient: v3.create(1, 1, 0)
+      diffuse: defaultColor,
+      specular: defaultColor,
+      ambient: defaultColor,
     };
     this.shininess = 10.0;
   }
