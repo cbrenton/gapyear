@@ -7,7 +7,7 @@ import {Material} from 'scene/material.js'
 
 class Primitive {
   /**
-   * @param {string} type one of 'cube', 'sphere'
+   * @param {string} type one of 'cube', 'sphere', 'plane'
    * @param {WebGLProgram} programInfo
    * @param {Material} material
    * @param {m4} transform
@@ -17,11 +17,18 @@ class Primitive {
       transform = m4.identity();
     }
     this.position = v3.create();
-    if (type == 'cube') {
-      this.bufferInfo = primitives.createCubeBufferInfo(gl, 1);
-    }
-    if (type == 'sphere') {
-      this.bufferInfo = primitives.createSphereBufferInfo(gl, 1, 24, 12);
+    switch (type) {
+      case 'cube':
+        this.bufferInfo = primitives.createCubeBufferInfo(gl, 1);
+        break;
+      case 'sphere':
+        this.bufferInfo = primitives.createSphereBufferInfo(gl, 1, 24, 12);
+        break;
+      case 'plane':
+        this.bufferInfo = primitives.createPlaneBufferInfo(gl, 2, 2);
+        break;
+      default:
+        throw Error(`Undefined primitive ${type}`);
     }
     this.material = material;
     this.transform = transform;

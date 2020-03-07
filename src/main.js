@@ -1,6 +1,6 @@
 'use strict';
 
-import {m4} from 'twgl.js';
+import {v3, m4} from 'twgl.js';
 
 import * as util from 'util/scene-helpers.js';
 import phongShader from 'shaders/phong.js';
@@ -28,7 +28,7 @@ function createScene(gl) {
   const aspect =
       parseFloat(gl.canvas.clientWidth) / parseFloat(gl.canvas.clientHeight);
   const fovDegrees = 45.0;
-  const eye = [0, 0, 10];
+  const eye = [0, 1, 10];
   const target = [0, 0, 0];
   const up = [0, 1, 0];
 
@@ -37,7 +37,9 @@ function createScene(gl) {
 
   const phongInfo = util.createShaders(gl, phongShader);
 
-  const cubeTransform = m4.translation([0, 3, 0]);
+  const cubeTransform = m4.rotationX(util.degToRad(30));
+  m4.rotateY(cubeTransform, util.degToRad(10), cubeTransform);
+  m4.translate(cubeTransform, [2, 1, 0], cubeTransform);
   const cubeMat = new Material();
   const cube = new Primitive('cube', phongInfo, cubeMat, cubeTransform);
   graph.addGeom(cube);
@@ -47,6 +49,13 @@ function createScene(gl) {
   sphereMat.shininess = 32.0;
   const sphere = new Primitive('sphere', phongInfo, sphereMat, sphereTransform);
   graph.addGeom(sphere);
+
+  const planeTransform = m4.translation([0, -1, 0]);
+  m4.scale(planeTransform, [10, 10, 10], planeTransform);
+  const planeMat = new Material();
+  planeMat.color.diffuse = v3.create(0, 0, 1);
+  const plane = new Primitive('plane', phongInfo, planeMat, planeTransform);
+  graph.addGeom(plane);
 
   return graph;
 }
