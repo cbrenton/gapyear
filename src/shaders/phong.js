@@ -9,6 +9,7 @@ uniform mat4 u_modelMatrix;
 uniform mat4 u_viewMatrix;
 uniform mat4 u_projectionMatrix;
 uniform vec3 u_cameraPos;
+uniform vec3 u_lightPos;
 
 out vec3 v_normal;
 out vec3 v_surfToLight;
@@ -20,8 +21,6 @@ void main() {
 
   mat4 modelInverseTranspose = transpose(inverse(u_modelMatrix));
   v_normal = mat3(modelInverseTranspose) * normal;
-
-  vec3 u_lightPos = vec3(10, 10, 0);
 
   vec3 surfaceWorldPos = vec3(u_modelMatrix * position);
   v_surfToLight = u_lightPos - surfaceWorldPos;
@@ -37,6 +36,7 @@ in vec3 v_viewVec;
 uniform vec3 u_diffuseColor;
 uniform vec3 u_specularColor;
 uniform vec3 u_ambientColor;
+uniform vec3 u_lightColor;
 uniform float u_shininess;
 
 out vec4 finalColor;
@@ -47,11 +47,11 @@ void main() {
   vec3 V = normalize(v_viewVec);
   vec3 R = reflect(-L, v_normal);
 
-  vec3 diffuse = u_diffuseColor * max(dot(N, L), 0.0);
+  vec3 diffuse = u_diffuseColor * u_lightColor * max(dot(N, L), 0.0);
 
-  vec3 specular = u_specularColor * pow(max(dot(V, R), 0.0), u_shininess);
+  vec3 specular = u_specularColor * u_lightColor * pow(max(dot(V, R), 0.0), u_shininess);
 
-  vec3 ambient = u_ambientColor * 0.1;
+  vec3 ambient = u_ambientColor * u_lightColor * 0.1;
   
   vec3 result = diffuse + specular + ambient;
   finalColor = vec4(result, 1);

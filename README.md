@@ -9,7 +9,7 @@ A deferred rendering engine in WebGL.
 - [x] Add cube and render scene.
 - [x] Add FPS counter.
 - [x] Add basic Material class with phong variables.
-- [ ] Add basic Light class and allow a single light in the scene.
+- [x] Add basic Light class and allow a single light in the scene.
 - [ ] Integrate basic obj file loader (parse-obj.js from webgl-hello).
 - [ ] Add obj file to scene graph.
 - [ ] Add some heirarchical model to scene graph.

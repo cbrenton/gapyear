@@ -7,6 +7,7 @@ import phongShader from 'shaders/phong.js';
 import {logFrame} from 'util/fps-counter.js';
 import {SceneGraph} from 'scene/scene-graph.js';
 import {Camera} from 'scene/camera.js';
+import {Light} from 'scene/light.js';
 import {Primitive} from 'scene/primitive.js';
 import {Material} from 'scene/material.js';
 
@@ -34,6 +35,10 @@ function createScene(gl) {
 
   const camera = new Camera(eye, target, up, aspect, fovDegrees);
   graph.addCamera(camera);
+
+  const lightPos = v3.create(10, 10, 10);
+  const light = new Light(lightPos, v3.create(1, 1, 1));
+  graph.addLight(light);
 
   const phongInfo = util.createShaders(gl, phongShader);
 
