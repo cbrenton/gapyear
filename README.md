@@ -3,6 +3,8 @@ A deferred rendering engine in WebGL.
 
 ## Goals
 ### Scene setup
+- [x] Create basic project that serves a static HTML page with a bundled script.
+- [ ] Import scene-helpers.js from webgl-hello and add a blank canvas.
 - [ ] Create scene graph object, with separate arrays for light, geometry, and cameras.
 - [ ] Add cube and render scene.
 - [ ] Add FPS counter.

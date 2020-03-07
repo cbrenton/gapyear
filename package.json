@@ -1,0 +1,32 @@
+{
+  "name": "maybelater",
+  "version": "1.0.0",
+  "description": "Deferred renderer in WebGL",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "twgl.js": "^4.14.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "clang-format": "^1.4.0",
+    "rollup": "^1.31.1",
+    "rollup-plugin-includepaths": "^0.2.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "start": "node ./app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbrenton/maybelater.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cbrenton/maybelater/issues"
+  },
+  "homepage": "https://github.com/cbrenton/maybelater#readme"
+}
