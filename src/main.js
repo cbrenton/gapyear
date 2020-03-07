@@ -41,11 +41,13 @@ function createScene(gl) {
   m4.rotateY(cubeTransform, util.degToRad(10), cubeTransform);
   m4.translate(cubeTransform, [2, 1, 0], cubeTransform);
   const cubeMat = new Material();
+  cubeMat.randomize();
   const cube = new Primitive('cube', phongInfo, cubeMat, cubeTransform);
   graph.addGeom(cube);
 
   const sphereTransform = m4.translation([-2, 0, -3]);
   const sphereMat = new Material();
+  sphereMat.randomize();
   sphereMat.shininess = 32.0;
   const sphere = new Primitive('sphere', phongInfo, sphereMat, sphereTransform);
   graph.addGeom(sphere);
@@ -53,6 +55,7 @@ function createScene(gl) {
   const planeTransform = m4.translation([0, -1, 0]);
   m4.scale(planeTransform, [10, 10, 10], planeTransform);
   const planeMat = new Material();
+  planeMat.randomize('monochrome');
   const plane = new Primitive('plane', phongInfo, planeMat, planeTransform);
   graph.addGeom(plane);
 
