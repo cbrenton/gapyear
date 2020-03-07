@@ -7,7 +7,7 @@ A deferred rendering engine in WebGL.
 - [x] Import scene-helpers.js from webgl-hello and add a blank canvas.
 - [ ] Create scene graph object, with separate arrays for light, geometry, and cameras.
 - [ ] Add cube and render scene.
-- [ ] Add FPS counter.
+- [x] Add FPS counter.
 - [ ] Integrate basic obj file loader (parse-obj.js from webgl-hello).
 - [ ] Add obj file to scene graph.
 - [ ] Add some heirarchical model to scene graph.
