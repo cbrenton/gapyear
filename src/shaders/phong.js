@@ -45,7 +45,7 @@ void main() {
   vec3 N = normalize(v_normal);
   vec3 L = normalize(v_surfToLight);
   vec3 V = normalize(v_viewVec);
-  vec3 R = reflect(-L, v_normal);
+  vec3 R = reflect(-L, N);
 
   vec3 diffuse = u_diffuseColor * u_lightColor * max(dot(N, L), 0.0);
 
