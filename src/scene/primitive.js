@@ -30,6 +30,7 @@ class Primitive {
       default:
         throw Error(`Undefined primitive ${type}`);
     }
+    this.tag = `primitive.${type}`;
     this.material = material;
     this.transform = transform;
     this.programInfo = programInfo;
