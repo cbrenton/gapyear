@@ -13,7 +13,7 @@ A deferred rendering engine in WebGL.
 - [ ] Integrate basic obj file loader (parse-obj.js from webgl-hello).
 - [ ] Add obj file to scene graph.
 - [ ] Add some heirarchical model to scene graph.
-- [ ] Add many objects to scene randomly.
+- [x] Add many objects to scene randomly.
 - [ ] Integrate key capture library (maybe keypress).
 - [ ] Add multiple cameras, with the ability to switch between them using keystrokes.
 - [ ] Animate some of the objects.

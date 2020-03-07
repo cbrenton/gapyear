@@ -3,6 +3,9 @@ import * as twgl from 'twgl.js';
 
 window.showHUD = false;
 
+const m4 = twgl.m4;
+const v3 = twgl.v3;
+
 /* ======== GL helper functions ======== */
 
 export function createCanvas(description) {
@@ -80,9 +83,34 @@ export function randomColor(hue) {
     args.hue = hue;
   }
   const color = randomAttractiveColor(args);
-  const colorVec =
-      twgl.v3.create(color[0] / 255, color[1] / 255, color[2] / 255);
+  const colorVec = v3.create(color[0] / 255, color[1] / 255, color[2] / 255);
   return colorVec;
+}
+
+export function randomTransform(yMin, zMax) {
+  let transform = m4.identity();
+
+  // Translate
+  const max = 6.0;
+  const randomTranslate = v3.create(
+      Math.random() * max * 2 - max,
+      Math.max(Math.random() * max * 2 - max, yMin),
+      Math.min(Math.random() * max * 2 - max, zMax));
+  m4.translate(transform, randomTranslate, transform);
+
+  // Rotate
+  const randomRotation = v3.create(
+      Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI,
+      Math.random() * 2 * Math.PI);
+  m4.rotateX(transform, randomRotation[0], transform);
+  m4.rotateY(transform, randomRotation[1], transform);
+  m4.rotateZ(transform, randomRotation[2], transform);
+
+  // Scale
+  const scaleFactor = Math.random();
+  const randomScale = v3.create(scaleFactor, scaleFactor, scaleFactor);
+  m4.scale(transform, randomScale, transform);
+  return transform;
 }
 
 /* ======== Private functions ======== */

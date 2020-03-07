@@ -19,7 +19,7 @@ class Material {
     this.color.diffuse = color;
     this.color.specular = color;
     this.color.ambient = color;
-    this.shininess = Math.random() * 100.0;
+    this.shininess = Math.random() * 99.0 + 1.0;
   }
 
   get uniforms() {
