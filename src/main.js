@@ -8,6 +8,7 @@ import {logFrame} from 'util/fps-counter.js';
 import {SceneGraph} from 'scene/scene-graph.js';
 import {Camera} from 'scene/camera.js';
 import {Primitive} from 'scene/primitive.js';
+import {Material} from 'scene/material.js';
 
 window.onload = function() {
   const label = 'Hello WebGL!';
@@ -36,7 +37,8 @@ function createScene(gl) {
 
   const phongInfo = util.createShaders(gl, phongShader);
   const transform = m4.translation([0, 3, 0]);
-  const cube = new Primitive('cube', phongInfo, transform);
+  const cubeMat = new Material();
+  const cube = new Primitive('cube', phongInfo, cubeMat, transform);
   graph.addGeom(cube);
   return graph;
 }

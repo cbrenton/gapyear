@@ -3,14 +3,16 @@
 import {v3, m4, primitives} from 'twgl.js';
 
 import * as util from 'util/scene-helpers.js';
+import {Material} from 'scene/material.js'
 
 class Primitive {
   /**
    * @param {string} type one of 'cube', 'sphere'
    * @param {WebGLProgram} programInfo
+   * @param {Material} material
    * @param {m4} transform
    */
-  constructor(type, programInfo, transform) {
+  constructor(type, programInfo, material, transform) {
     if (transform === undefined) {
       transform = m4.identity();
     }
@@ -21,21 +23,19 @@ class Primitive {
     if (type == 'sphere') {
       this.bufferInfo = primitives.createSphereBufferInfo(gl, 1, 24, 12);
     }
+    this.material = material;
     this.transform = transform;
-    this.material = {
-      color: {
-        diffuse: v3.create(0, 0, 1),
-      },
-    };
-    this.texture = null;
     this.programInfo = programInfo;
   }
 
   get uniforms() {
-    return {
+    const uniforms = {
       u_modelMatrix: this.transform,
-      u_diffuseColor: this.material.color.diffuse,
     };
+
+    Object.assign(uniforms, this.material.uniforms);
+
+    return uniforms;
   }
 
   /**
