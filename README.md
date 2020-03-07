@@ -8,7 +8,7 @@ A deferred rendering engine in WebGL.
 - [x] Create scene graph object, with separate arrays for light, geometry, and cameras.
 - [x] Add cube and render scene.
 - [x] Add FPS counter.
-- [ ] Add basic Material class with phong variables.
+- [x] Add basic Material class with phong variables.
 - [ ] Integrate basic obj file loader (parse-obj.js from webgl-hello).
 - [ ] Add obj file to scene graph.
 - [ ] Add some heirarchical model to scene graph.

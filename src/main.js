@@ -36,10 +36,18 @@ function createScene(gl) {
   graph.addCamera(camera);
 
   const phongInfo = util.createShaders(gl, phongShader);
-  const transform = m4.translation([0, 3, 0]);
+
+  const cubeTransform = m4.translation([0, 3, 0]);
   const cubeMat = new Material();
-  const cube = new Primitive('cube', phongInfo, cubeMat, transform);
+  const cube = new Primitive('cube', phongInfo, cubeMat, cubeTransform);
   graph.addGeom(cube);
+
+  const sphereTransform = m4.translation([-2, 0, -3]);
+  const sphereMat = new Material();
+  sphereMat.shininess = 32.0;
+  const sphere = new Primitive('sphere', phongInfo, sphereMat, sphereTransform);
+  graph.addGeom(sphere);
+
   return graph;
 }
 
@@ -55,6 +63,7 @@ function drawFrame(gl, overlay, scene) {
 
   gl.clearColor(0, 1, 0, 1);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.DEPTH_TEST);
 
   scene.draw(gl);
 
