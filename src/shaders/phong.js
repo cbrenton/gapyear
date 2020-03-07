@@ -8,6 +8,7 @@ in vec3 normal;
 uniform mat4 u_modelMatrix;
 uniform mat4 u_viewMatrix;
 uniform mat4 u_projectionMatrix;
+uniform vec3 u_cameraPos;
 
 out vec3 v_normal;
 out vec3 v_surfToLight;
@@ -21,7 +22,6 @@ void main() {
   v_normal = mat3(modelInverseTranspose) * normal;
 
   vec3 u_lightPos = vec3(10, 10, 0);
-  vec3 u_cameraPos = vec3(0, 0, -1);
 
   vec3 surfaceWorldPos = vec3(u_modelMatrix * position);
   v_surfToLight = u_lightPos - surfaceWorldPos;

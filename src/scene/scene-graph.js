@@ -44,6 +44,7 @@ class SceneGraph {
     const globalUniforms = {
       u_viewMatrix: mainCamera.viewMatrix,
       u_projectionMatrix: mainCamera.projMatrix,
+      u_cameraPos: mainCamera.position,
     };
     for (const el of this.geometry) {
       el.draw(gl, globalUniforms);
