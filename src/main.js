@@ -4,6 +4,7 @@ import * as util from 'util/scene-helpers.js';
 import {logFrame} from 'util/fps-counter.js';
 import {SceneGraph} from 'scene/scene-graph.js';
 import {Camera} from 'scene/camera.js';
+import {Primitive} from 'scene/primitive.js';
 
 window.onload = function() {
   const label = 'Hello WebGL!';
@@ -28,6 +29,9 @@ function createScene() {
 
   const camera = new Camera(eye, target, up, aspect);
   graph.addCamera(camera);
+
+  const cube = new Primitive('cube');
+  graph.addGeom(cube);
   return graph;
 }
 
@@ -44,7 +48,7 @@ function drawFrame(gl, overlay, scene) {
   gl.clearColor(0, 1, 0, 1);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  scene.draw();
+  scene.draw(gl);
 
   requestAnimationFrame(function() {
     drawFrame(gl, overlay, scene);

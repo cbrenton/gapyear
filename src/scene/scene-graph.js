@@ -1,5 +1,7 @@
 'use strict';
 
+import {v3} from 'twgl.js';
+
 class SceneGraph {
   constructor() {
     this.lights = [];
@@ -17,11 +19,20 @@ class SceneGraph {
   }
 
   /**
+   * Add a renderable object to the list.
+   * @param {(Primitive|Mesh)} geom
+   */
+  addGeom(geom) {
+    this.geometry.push(geom);
+  }
+
+  /**
    * Draw to the scene using the specified camera, or the default camera if none
    * is specified.
+   * @param {WebGL2RenderingContext} gl
    * @param {int} [cameraIndex] optional camera index
    */
-  draw(cameraIndex) {
+  draw(gl, cameraIndex) {
     if (cameraIndex === undefined) {
       cameraIndex = this.defaultCamera;
     }
@@ -30,8 +41,12 @@ class SceneGraph {
       throw new Error('no camera exists in scene.');
     }
 
+    const globalUniforms = {
+      u_viewMatrix: mainCamera.viewMatrix,
+      u_projMatrix: mainCamera.projMatrix,
+    };
     for (const el of this.geometry) {
-      el.draw(mainCamera);
+      el.draw(gl, mainCamera, globalUniforms);
     }
     // @TODO: add a way to render lights and cameras as geometry when needed
   }
