@@ -8,16 +8,32 @@ class SceneGraph {
     this.defaultCamera = 0;
   }
 
-  draw() {
-    if (this.cameras[this.defaultCamera] === undefined) {
-      throw 'Error: no camera exists in scene.';
-      return;
+  /**
+   * Add a camera to the list.
+   * @param {Camera} camera
+   */
+  addCamera(camera) {
+    this.cameras.push(camera);
+  }
+
+  /**
+   * Draw to the scene using the specified camera, or the default camera if none
+   * is specified.
+   * @param {int} [cameraIndex] optional camera index
+   */
+  draw(cameraIndex) {
+    if (cameraIndex === undefined) {
+      cameraIndex = this.defaultCamera;
     }
+    const mainCamera = this.cameras[cameraIndex];
+    if (mainCamera === undefined) {
+      throw new Error('no camera exists in scene.');
+    }
+
     for (const el of this.geometry) {
-      console.log(`drawing instance of ${el.tag}`)
-      el.draw();
+      el.draw(mainCamera);
     }
-    // @TODO: add a way to render lights as geometry when needed
+    // @TODO: add a way to render lights and cameras as geometry when needed
   }
 }
 
