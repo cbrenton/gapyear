@@ -2,20 +2,33 @@
 
 import {v3, m4, primitives} from 'twgl.js';
 
+import * as util from 'util/scene-helpers.js';
+
 class Primitive {
-  constructor(type) {
+  /**
+   * @param {string} type one of 'cube', 'sphere'
+   * @param {WebGLProgram} programInfo
+   * @param {m4} transform
+   */
+  constructor(type, programInfo, transform) {
+    if (transform === undefined) {
+      transform = m4.identity();
+    }
     this.position = v3.create();
     if (type == 'cube') {
+      this.bufferInfo = primitives.createCubeBufferInfo(gl, 1);
+    }
+    if (type == 'sphere') {
       this.bufferInfo = primitives.createSphereBufferInfo(gl, 1, 24, 12);
     }
-    this.transform = m4.translation([0, 3, 0]);
+    this.transform = transform;
     this.material = {
       color: {
-        diffuse: v3.create(1, 0, 0),
+        diffuse: v3.create(0, 0, 1),
       },
     };
     this.texture = null;
-    this.programInfo = null;
+    this.programInfo = programInfo;
   }
 
   get uniforms() {
@@ -28,12 +41,12 @@ class Primitive {
   /**
    * Render using a WebGL context and a specific camera.
    * @param {WebGL2RenderingContext} gl
-   * @param {Camera} camera
    * @param {Object} globalUniforms uniforms passed from SceneGraph applicable
    *     to all objects
    */
-  draw(gl, camera, globalUniforms) {
-    console.log('drew it');
+  draw(gl, globalUniforms) {
+    util.drawBuffer(
+        gl, this.programInfo, this.bufferInfo, this.uniforms, globalUniforms);
   }
 }
 

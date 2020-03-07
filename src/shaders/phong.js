@@ -20,7 +20,7 @@ uniform vec3 u_diffuseColor;
 out vec4 finalColor;
 
 void main() {
-  finalColor = vec4(1, 0, 0, 1);
+  finalColor = vec4(u_diffuseColor, 1);
 }`,
 };
 

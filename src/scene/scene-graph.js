@@ -43,10 +43,10 @@ class SceneGraph {
 
     const globalUniforms = {
       u_viewMatrix: mainCamera.viewMatrix,
-      u_projMatrix: mainCamera.projMatrix,
+      u_projectionMatrix: mainCamera.projMatrix,
     };
     for (const el of this.geometry) {
-      el.draw(gl, mainCamera, globalUniforms);
+      el.draw(gl, globalUniforms);
     }
     // @TODO: add a way to render lights and cameras as geometry when needed
   }

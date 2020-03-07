@@ -31,11 +31,13 @@ class Camera {
   }
 
   get viewMatrix() {
-    return new m4.lookAt(this.position, this.target, this.up);
+    // m4.lookAt creates a camera matrix, not a view matrix. This needs to be
+    // inverted to turn it into a view matrix
+    return m4.inverse(m4.lookAt(this.position, this.target, this.up));
   }
 
   get projMatrix() {
-    return new m4.perspective(this.fov, this.aspect, this.near, this.far);
+    return m4.perspective(this.fov, this.aspect, this.near, this.far);
   }
 }
 
