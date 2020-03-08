@@ -32,13 +32,22 @@ function createSceneInfo(gl) {
 function drawFrame(gl, overlay, sceneInfo) {
   logFrame(overlay);
 
-  gl.clearColor(0.58, 0.78, 0.85, 1);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  gl.enable(gl.DEPTH_TEST);
-
-  sceneInfo.graph.draw(gl);
+  renderToScreen(gl, sceneInfo.graph);
 
   requestAnimationFrame(function() {
     drawFrame(gl, overlay, sceneInfo);
   });
+}
+
+/**
+ * Render to the screen, not a framebuffer.
+ * @param {WebGL2RenderingContext} gl
+ * @param {SceneGraph} graph
+ */
+function renderToScreen(gl, graph) {
+  gl.clearColor(0.58, 0.78, 0.85, 1);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.DEPTH_TEST);
+
+  graph.draw(gl);
 }
