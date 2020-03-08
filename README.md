@@ -35,3 +35,10 @@ A deferred rendering engine in WebGL.
 ### Final pass
 - [ ] Render textured quad to screen.
 - [ ] Combine g-buffer diffuse, l-buffer light contrib, and l-buffer specular to create final image.
+
+### Other stuff
+- [ ] Change lighting to Blinn-Phong.
+- [ ] Add Fresnel factor to specular lighting.
+- [ ] Add per-pixel fog using g-buffer depth.
+- [ ] Add SSAO.
+- [ ] Implement deferred lighting (should be its own section).
