@@ -2,7 +2,7 @@
 
 import * as util from 'util/scene-helpers.js';
 import {logFrame} from 'util/fps-counter.js';
-import {createSimpleScene} from 'scene/simple-scene.js';
+import {createSimpleScene, createTextures} from 'scene/simple-scene.js';
 
 window.onload = function() {
   const label = 'Hello WebGL!';
@@ -17,9 +17,11 @@ window.onload = function() {
  * @return {SimpleScene}
  */
 function createSceneInfo(gl) {
-  return {
-    graph: createSimpleScene(gl), render: {},
-  }
+  const result = {};
+  result.textures = createTextures(gl);
+  result.graph = createSimpleScene(gl, result.textures);
+  result.render = {};
+  return result;
 }
 
 /**

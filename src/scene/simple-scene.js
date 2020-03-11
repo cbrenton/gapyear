@@ -10,14 +10,14 @@ import {Material} from 'scene/material.js';
 import {createShaders, randomTransform} from 'util/scene-helpers.js';
 import phongShader from 'shaders/phong.js';
 
-export function createSimpleScene(gl) {
+export function createSimpleScene(gl, textures) {
   const graph = new SceneGraph();
 
   createCameras(gl, graph);
 
   createLights(graph);
 
-  createGeometry(graph);
+  createGeometry(graph, textures);
 
   return graph;
 }
@@ -40,7 +40,7 @@ function createLights(graph) {
   graph.addLight(light);
 }
 
-function createGeometry(graph) {
+function createGeometry(graph, textures) {
   const phongInfo = createShaders(gl, phongShader);
 
   const numCubes = 10;
@@ -67,6 +67,32 @@ function createGeometry(graph) {
   m4.scale(planeTransform, [10, 10, 10], planeTransform);
   const planeMat = new Material();
   planeMat.randomize('monochrome');
+  planeMat.addTexture(textures.checkerboardTexture);
   const plane = new Primitive('plane', phongInfo, planeMat, planeTransform);
   graph.addGeom(plane);
+}
+
+export function createTextures() {
+  const textures = {};
+
+  const checkerboardTexture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, checkerboardTexture);
+  gl.texImage2D(
+      gl.TEXTURE_2D, 0, gl.LUMINANCE, 8, 8, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE,
+      new Uint8Array([
+        0xFF, 0xCC, 0xFF, 0xCC, 0xFF, 0xCC, 0xFF, 0xCC, 0xCC, 0xFF, 0xCC,
+        0xFF, 0xCC, 0xFF, 0xCC, 0xFF, 0xFF, 0xCC, 0xFF, 0xCC, 0xFF, 0xCC,
+        0xFF, 0xCC, 0xCC, 0xFF, 0xCC, 0xFF, 0xCC, 0xFF, 0xCC, 0xFF, 0xFF,
+        0xCC, 0xFF, 0xCC, 0xFF, 0xCC, 0xFF, 0xCC, 0xCC, 0xFF, 0xCC, 0xFF,
+        0xCC, 0xFF, 0xCC, 0xFF, 0xFF, 0xCC, 0xFF, 0xCC, 0xFF, 0xCC, 0xFF,
+        0xCC, 0xCC, 0xFF, 0xCC, 0xFF, 0xCC, 0xFF, 0xCC, 0xFF,
+      ]));
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+  textures.checkerboardTexture = checkerboardTexture;
+
+  gl.bindTexture(gl.TEXTURE_2D, null);
+
+  return textures;
 }

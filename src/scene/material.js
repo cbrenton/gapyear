@@ -12,6 +12,8 @@ export class Material {
       ambient: defaultColor,
     };
     this.shininess = 10.0;
+    this.isTextured = false;
+    this.texture = null;
   }
 
   randomize(hue) {
@@ -23,11 +25,28 @@ export class Material {
   }
 
   get uniforms() {
-    return {
+    const result = {
       u_diffuseColor: this.color.diffuse,
       u_specularColor: this.color.specular,
       u_ambientColor: this.color.ambient,
       u_shininess: this.shininess,
     };
+
+    if (this.isTextured) {
+      result.u_texture = this.texture;
+    }
+
+    return result;
+  }
+
+  /**
+   * Add a texture to this material.
+   * NOTE: if no texture is set, a default texture needs to be set in global
+   * uniforms (right now that happens in SceneGraph)
+   * @param {WebGLTexture} tex
+   */
+  addTexture(tex) {
+    this.isTextured = true;
+    this.texture = tex;
   }
 }

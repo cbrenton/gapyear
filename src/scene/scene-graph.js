@@ -1,6 +1,6 @@
 'use strict';
 
-import {v3} from 'twgl.js';
+import {createBlankTexture} from 'util/scene-helpers.js';
 
 export class SceneGraph {
   constructor() {
@@ -8,6 +8,7 @@ export class SceneGraph {
     this.geometry = [];
     this.cameras = [];
     this.defaultCamera = 0;
+    this.blankTexture = createBlankTexture();
   }
 
   /**
@@ -60,6 +61,7 @@ export class SceneGraph {
       u_cameraPos: mainCamera.position,
       u_lightPos: light.position,
       u_lightColor: light.color,
+      u_texture: this.blankTexture,
     };
     for (const el of this.geometry) {
       el.draw(gl, globalUniforms);
