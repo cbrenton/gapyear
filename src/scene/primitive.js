@@ -5,7 +5,7 @@ import {v3, m4, primitives} from 'twgl.js';
 import * as util from 'util/scene-helpers.js';
 import {Material} from 'scene/material.js'
 
-class Primitive {
+export class Primitive {
   /**
    * @param {string} type one of 'cube', 'sphere', 'plane'
    * @param {WebGLProgram} programInfo
@@ -57,5 +57,3 @@ class Primitive {
         gl, this.programInfo, this.bufferInfo, this.uniforms, globalUniforms);
   }
 }
-
-export {Primitive};

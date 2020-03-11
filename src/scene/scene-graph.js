@@ -2,7 +2,7 @@
 
 import {v3} from 'twgl.js';
 
-class SceneGraph {
+export class SceneGraph {
   constructor() {
     this.lights = [];
     this.geometry = [];
@@ -67,5 +67,3 @@ class SceneGraph {
     // @TODO: add a way to render lights and cameras as geometry when needed
   }
 }
-
-export {SceneGraph};

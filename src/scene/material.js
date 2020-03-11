@@ -3,7 +3,7 @@
 import {v3} from 'twgl.js';
 import {randomColor} from 'util/scene-helpers.js';
 
-class Material {
+export class Material {
   constructor() {
     const defaultColor = v3.create(1, 1, 1);
     this.color = {
@@ -31,5 +31,3 @@ class Material {
     };
   }
 }
-
-export {Material};

@@ -3,7 +3,7 @@
 import {m4} from 'twgl.js';
 import {degToRad} from 'util/scene-helpers.js';
 
-class Camera {
+export class Camera {
   /**
    * @param {v3} eye
    * @param {v3} target
@@ -40,5 +40,3 @@ class Camera {
     return m4.perspective(this.fov, this.aspect, this.near, this.far);
   }
 }
-
-export {Camera};
