@@ -64,7 +64,7 @@ export class OverlayGrid {
       m4.translate(
           screenTransform, v3.create(translateDistanceX, translateDistanceY, 0),
           screenTransform);
-      m4.rotateX(screenTransform, degToRad(90), screenTransform);
+      m4.rotateX(screenTransform, degToRad(-90), screenTransform);
       m4.scale(
           screenTransform, v3.create(screenScale, screenScale, screenScale),
           screenTransform);
