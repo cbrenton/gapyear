@@ -10,13 +10,7 @@ A deferred rendering engine in WebGL.
 - [x] Add FPS counter.
 - [x] Add basic Material class with phong variables.
 - [x] Add basic Light class and allow a single light in the scene.
-- [ ] Integrate basic obj file loader (parse-obj.js from webgl-hello).
-- [ ] Add obj file to scene graph.
-- [ ] Add some heirarchical model to scene graph.
 - [x] Add many objects to scene randomly.
-- [ ] Integrate key capture library (maybe keypress).
-- [ ] Add multiple cameras, with the ability to switch between them using keystrokes.
-- [ ] Animate some of the objects.
 
 ### G-buffer
 - [x] Render entire scene to FBO.
@@ -24,22 +18,29 @@ A deferred rendering engine in WebGL.
 - [ ] Render albedo to g-buffer FBO.
 - [ ] Display albedo buffer in debug window.
 - [ ] Render normal to g-buffer FBO.
-- [ ] Render position to g-buffer FBO.
-- [ ] Display albedo + normal + depth buffers in debug window.
+- [ ] Render specular contrib to g-buffer FBO.
+- [ ] Display albedo + normal + specular contrib + depth buffers in debug window.
 
 ### L-buffer
 - [ ] Display two l-buffer textures in debug window.
 - [ ] Render a sphere to FBO for each point light (debug).
 - [ ] Render all geometry in light's sphere of influence as white to FBO (debug).
-- [ ] Render light contribution to l-buffer FBO.
+- [ ] Render diffuse to l-buffer FBO.
 - [ ] Render specular to l-buffer FBO.
 
 ### Final pass
 - [ ] Render textured quad to screen.
-- [ ] Combine g-buffer diffuse, l-buffer light contrib, and l-buffer specular to create final image.
+- [ ] Combine l-buffer diffuse and specular to create final image.
 
 ### Other stuff
+- [ ] Integrate basic obj file loader (parse-obj.js from webgl-hello).
+- [ ] Add obj file to scene graph.
+- [ ] Add some heirarchical model to scene graph.
+- [ ] Integrate key capture library (maybe keypress).
+- [ ] Add multiple cameras, with the ability to switch between them using keystrokes.
+- [ ] Animate some of the objects.
 - [ ] Change lighting to Blinn-Phong.
+- [ ] Grok Blinn-Phong differences enough to validate that it's working as expected.
 - [ ] Add Fresnel factor to specular lighting.
 - [ ] Add per-pixel fog using g-buffer depth.
 - [ ] Add SSAO.
