@@ -64,7 +64,7 @@ function createGeometry(graph, textures) {
   }
 
   const planeTransform = m4.translation([0, -1, 0]);
-  m4.scale(planeTransform, [10, 10, 10], planeTransform);
+  m4.scale(planeTransform, [20, 20, 20], planeTransform);
   const planeMat = new Material();
   planeMat.randomize('monochrome');
   planeMat.addTexture(textures.checkerboardTexture);

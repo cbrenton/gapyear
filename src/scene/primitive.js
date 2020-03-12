@@ -25,7 +25,7 @@ export class Primitive {
         this.bufferInfo = primitives.createSphereBufferInfo(gl, 1, 24, 12);
         break;
       case 'plane':
-        this.bufferInfo = primitives.createPlaneBufferInfo(gl, 2, 2);
+        this.bufferInfo = primitives.createPlaneBufferInfo(gl, 1, 1);
         break;
       default:
         throw Error(`Undefined primitive ${type}`);
