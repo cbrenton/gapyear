@@ -9,6 +9,7 @@ window.onload = function() {
   const gl = util.createGLCanvas(label);
   const overlay = util.getOverlay();
   const sceneInfo = createSceneInfo(gl);
+  window.showHUD = true;
   drawFrame(gl, overlay, sceneInfo);
 };
 
@@ -33,6 +34,8 @@ function createSceneInfo(gl) {
  */
 function drawFrame(gl, overlay, sceneInfo) {
   logFrame(overlay);
+
+  sceneInfo.graph.hud.enabled = window.showHUD;
 
   renderToScreen(gl, sceneInfo.graph);
 

@@ -1,11 +1,17 @@
 'use strict';
 
+import {v3, m4} from 'twgl.js';
 import {createBlankTexture} from 'util/scene-helpers.js';
+import {OverlayGrid} from 'util/overlay-grid';
 
 export class SceneGraph {
   constructor() {
     this.lights = [];
-    this.geometry = [];
+    this.hud = new OverlayGrid();
+    this.geometry = {
+      main: [],
+      overlay: [this.hud],
+    };
     this.cameras = [];
     this.defaultCamera = 0;
     this.blankTexture = createBlankTexture();
@@ -24,7 +30,16 @@ export class SceneGraph {
    * @param {(Primitive|Mesh)} geom
    */
   addGeom(geom) {
-    this.geometry.push(geom);
+    this.geometry.main.push(geom);
+  }
+
+  /**
+   * Add a HUD element to be drawn with an orthographic projection on top.
+   * @TODO: update this description
+   * @param {Primitive} geom
+   */
+  addHUDElement(texture, programInfo) {
+    this.hud.addElement(texture, programInfo);
   }
 
   /**
@@ -55,6 +70,7 @@ export class SceneGraph {
       throw new Error('no lights exist in scene.')
     }
 
+    // Draw main geometry (in-camera view)
     const globalUniforms = {
       u_viewMatrix: mainCamera.viewMatrix,
       u_projectionMatrix: mainCamera.projMatrix,
@@ -63,9 +79,20 @@ export class SceneGraph {
       u_lightColor: light.color,
       u_texture: this.blankTexture,
     };
-    for (const el of this.geometry) {
+    for (const el of this.geometry.main) {
       el.draw(gl, globalUniforms);
     }
+
+    // Draw overlay geometry (on-screen view)
+    const overlayGlobalUniforms = {
+      u_viewMatrix: m4.identity(),
+      u_projectionMatrix: m4.identity(),
+      u_cameraPos: v3.create(0, 0, 0),
+    };
+    for (const el of this.geometry.overlay) {
+      el.draw(gl, overlayGlobalUniforms);
+    }
+
     // @TODO: add a way to render lights and cameras as geometry when needed
   }
 }
