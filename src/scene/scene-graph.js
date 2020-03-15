@@ -50,6 +50,16 @@ export class SceneGraph {
     this.lights.push(light);
   }
 
+
+  /**
+   * Add the textures from a GBuffer as HUD elements.
+   * @param {GBuffer} gbuffer
+   */
+  addGBufferToOverlay(gbuffer) {
+    this.addHUDElement(gbuffer.colorAttachments.albedo);
+    this.addHUDElement(gbuffer.depthAttachment);
+  }
+
   /**
    * Draw to the scene using the specified camera, or the default camera if none
    * is specified.

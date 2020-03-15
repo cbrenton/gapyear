@@ -19,8 +19,6 @@ export function createSimpleScene(gl, textures) {
 
   createGeometry(graph, textures);
 
-  createHUD(graph, textures);
-
   return graph;
 }
 
@@ -72,12 +70,6 @@ function createGeometry(graph, textures) {
   planeMat.addTexture(textures.checkerboardTexture);
   const plane = new Primitive('plane', phongInfo, planeMat, planeTransform);
   graph.addGeom(plane);
-}
-
-function createHUD(graph, textures) {
-  // @TODO: make a way to pass a texture from g-buffer
-  graph.addHUDElement(textures.checkerboardTexture);
-  graph.addHUDElement(textures.blackCheckerboardTexture);
 }
 
 export function createTextures() {

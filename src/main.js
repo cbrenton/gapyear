@@ -1,6 +1,7 @@
 'use strict';
 
 import * as util from 'util/scene-helpers.js';
+import {GBuffer} from 'util/gbuffer.js';
 import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene, createTextures} from 'scene/simple-scene.js';
 
@@ -20,9 +21,24 @@ window.onload = function() {
 function createSceneInfo(gl) {
   const result = {};
   result.textures = createTextures(gl);
+  result.render = {
+    gbuffer: createGBuffer(gl),
+  };
   result.graph = createSimpleScene(gl, result.textures);
-  result.render = {};
+  result.graph.addGBufferToOverlay(result.render.gbuffer)
   return result;
+}
+
+/**
+ * Create and initialize a gbuffer. Uses only one attachment for now.
+ * @param {WebGL2RenderingContext} gl
+ * @return {GBuffer}
+ */
+function createGBuffer(gl) {
+  const attachments = ['albedo'];
+  const gbuffer = new GBuffer(gl);
+  gbuffer.init(attachments);
+  return gbuffer;
 }
 
 /**
@@ -37,7 +53,9 @@ function drawFrame(gl, overlay, sceneInfo) {
 
   sceneInfo.graph.hud.enabled = window.showHUD;
 
-  renderToScreen(gl, sceneInfo.graph);
+  renderToBuffer(gl, sceneInfo.graph, sceneInfo.render.gbuffer);
+
+  renderOverlayToScreen(gl, sceneInfo.graph);
 
   requestAnimationFrame(function() {
     drawFrame(gl, overlay, sceneInfo);
@@ -50,9 +68,35 @@ function drawFrame(gl, overlay, sceneInfo) {
  * @param {SceneGraph} graph
  */
 function renderToScreen(gl, graph) {
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.clearColor(0.58, 0.78, 0.85, 1);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.enable(gl.DEPTH_TEST);
 
   graph.draw(gl);
+}
+
+function renderOverlayToScreen(gl, graph) {
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+  gl.clearColor(0.58, 0.78, 0.85, 1);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.DEPTH_TEST);
+
+  graph.drawOverlay(gl);
+}
+
+/**
+ * Render to a framebuffer, not the screen.
+ * @param {WebGL2RenderingContext} gl
+ * @param {SceneGraph} graph
+ * @param {GBuffer} buffer
+ */
+function renderToBuffer(gl, graph, buffer) {
+  buffer.bindAndSetViewport();
+  gl.clearColor(0.58, 0.78, 0.85, 1);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.DEPTH_TEST);
+
+  graph.draw(gl);
+  buffer.unbind();
 }
