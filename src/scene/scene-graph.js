@@ -82,7 +82,15 @@ export class SceneGraph {
     for (const el of this.geometry.main) {
       el.draw(gl, globalUniforms);
     }
+    // @TODO: add a way to render lights and cameras as geometry when needed
+  }
 
+  /**
+   * Draw all overlay geometry with depth testing disabled.
+   * @param {WebGL2RenderingContext} gl
+   */
+  drawOverlay(gl) {
+    gl.disable(gl.DEPTH_TEST);
     // Draw overlay geometry (on-screen view)
     const overlayGlobalUniforms = {
       u_viewMatrix: m4.identity(),
@@ -92,7 +100,6 @@ export class SceneGraph {
     for (const el of this.geometry.overlay) {
       el.draw(gl, overlayGlobalUniforms);
     }
-
-    // @TODO: add a way to render lights and cameras as geometry when needed
+    gl.enable(gl.DEPTH_TEST);
   }
 }
