@@ -44,7 +44,7 @@ export class OverlayGrid {
     // @TODO: move transform construction to initialization, not render time
     const screenScale = 0.4;
     const screenPadding = 0.05;
-    const aspect = gl.canvas.width / gl.canvas.height;
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
 
     // Start drawing in top right corner
     const screenOffsetX = -(screenScale + screenPadding) * aspect;
