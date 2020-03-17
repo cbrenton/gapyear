@@ -21,6 +21,8 @@ export class GBuffer {
     this.bindAndSetViewport();
     this.initColorAttachments(colorAttachments);
     this.initDepthAttachment();
+    this.setDrawBuffers();
+
     this.unbind();
 
     this.validate();
@@ -69,6 +71,15 @@ export class GBuffer {
     this.depthAttachment = depth;
 
     gl.bindTexture(gl.TEXTURE_2D, null);
+  }
+
+  setDrawBuffers() {
+    const numAttachments = Object.keys(this.colorAttachments).length;
+    const buffers = [];
+    for (let i = 0; i < numAttachments; ++i) {
+      buffers.push(this.gl.COLOR_ATTACHMENT0 + i);
+    }
+    gl.drawBuffers(buffers);
   }
 
   bindAndSetViewport() {

@@ -35,7 +35,7 @@ function createSceneInfo(gl) {
  * @return {GBuffer}
  */
 function createGBuffer(gl) {
-  const attachments = ['albedo'];
+  const attachments = ['albedo', 'normal', 'shininess'];
   const gbuffer = new GBuffer(gl);
   gbuffer.init(attachments);
   return gbuffer;

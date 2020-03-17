@@ -14,7 +14,7 @@ A deferred rendering engine in WebGL.
 
 ### G-buffer
 - [x] Render entire scene to FBO.
-- [ ] Output red, green, and blue to 3 separate FBO color attachments.
+- [x] Output red, green, and blue to 3 separate FBO color attachments.
 - [ ] Render albedo to g-buffer FBO.
 - [ ] Display albedo buffer in debug window.
 - [ ] Render normal to g-buffer FBO.

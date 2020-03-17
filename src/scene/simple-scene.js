@@ -8,7 +8,7 @@ import {Light} from 'scene/light.js';
 import {Primitive} from 'scene/primitive.js';
 import {Material} from 'scene/material.js';
 import {createShaders, randomTransform} from 'util/scene-helpers.js';
-import phongShader from 'shaders/phong.js';
+import gbufferShader from 'shaders/gbuffer.js';
 
 export function createSimpleScene(gl, textures) {
   const graph = new SceneGraph();
@@ -41,7 +41,7 @@ function createLights(graph) {
 }
 
 function createGeometry(graph, textures) {
-  const phongInfo = createShaders(gl, phongShader);
+  const gbufferInfo = createShaders(gl, gbufferShader);
 
   const numCubes = 10;
   for (let i = 0; i < numCubes; ++i) {
@@ -49,7 +49,7 @@ function createGeometry(graph, textures) {
     const cubeMat = new Material();
     cubeMat.randomize();
     cubeMat.shininess = 32.0;
-    const cube = new Primitive('cube', phongInfo, cubeMat, cubeTransform);
+    const cube = new Primitive('cube', gbufferInfo, cubeMat, cubeTransform);
     graph.addGeom(cube);
   }
 
@@ -59,7 +59,7 @@ function createGeometry(graph, textures) {
     const sphereMat = new Material();
     sphereMat.randomize();
     const sphere =
-        new Primitive('sphere', phongInfo, sphereMat, sphereTransform);
+        new Primitive('sphere', gbufferInfo, sphereMat, sphereTransform);
     graph.addGeom(sphere);
   }
 
@@ -68,7 +68,7 @@ function createGeometry(graph, textures) {
   const planeMat = new Material();
   planeMat.randomize('monochrome');
   planeMat.addTexture(textures.checkerboardTexture);
-  const plane = new Primitive('plane', phongInfo, planeMat, planeTransform);
+  const plane = new Primitive('plane', gbufferInfo, planeMat, planeTransform);
   graph.addGeom(plane);
 }
 

@@ -56,7 +56,9 @@ export class SceneGraph {
    * @param {GBuffer} gbuffer
    */
   addGBufferToOverlay(gbuffer) {
-    this.addHUDElement(gbuffer.colorAttachments.albedo);
+    for (let el in gbuffer.colorAttachments) {
+      this.addHUDElement(gbuffer.colorAttachments[el]);
+    }
     this.addHUDElement(gbuffer.depthAttachment);
   }
 
