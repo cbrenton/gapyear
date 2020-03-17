@@ -15,11 +15,11 @@ A deferred rendering engine in WebGL.
 ### G-buffer
 - [x] Render entire scene to FBO.
 - [x] Output red, green, and blue to 3 separate FBO color attachments.
-- [ ] Render albedo to g-buffer FBO.
-- [ ] Display albedo buffer in debug window.
-- [ ] Render normal to g-buffer FBO.
-- [ ] Render specular contrib to g-buffer FBO.
-- [ ] Display albedo + normal + specular contrib + depth buffers in debug window.
+- [x] Render albedo to g-buffer FBO.
+- [x] Display albedo buffer in debug window.
+- [x] Render normal to g-buffer FBO.
+- [x] Render specular contrib to g-buffer FBO.
+- [x] Display albedo + normal + specular contrib + depth buffers in debug window.
 
 ### L-buffer
 - [ ] Display two l-buffer textures in debug window.

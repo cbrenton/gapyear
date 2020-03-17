@@ -49,9 +49,9 @@ layout(location = 1) out vec4 g_normal;
 layout(location = 2) out vec4 g_shininess;
 
 void main() {
-  g_albedo = vec4(1, 0, 0, 1);
-  g_normal = vec4(0, 1, 0, 1);
-  g_shininess = vec4(0, 0, 1, 1);
+  g_albedo = vec4(u_diffuseColor, 1) * texture(u_texture, v_texcoord);
+  g_normal = vec4(normalize(v_normal), 1);
+  g_shininess = vec4(u_shininess / 256.0, 0, 0, 1);
 }`,
 };
 
