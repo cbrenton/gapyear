@@ -34,7 +34,7 @@ export class GBuffer {
   initColorAttachments(colorAttachments) {
     const gl = this.gl;
     for (let i = 0; i < colorAttachments.length; ++i) {
-      const attachment = colorAttachments[i];
+      const attachmentName = colorAttachments[i];
       const tex = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, tex);
       gl.texImage2D(
@@ -45,7 +45,7 @@ export class GBuffer {
       gl.framebufferTexture2D(
           gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0 + i, gl.TEXTURE_2D, tex, 0);
 
-      this.colorAttachments[attachment] = tex;
+      this.colorAttachments[attachmentName] = tex;
     }
     gl.bindTexture(gl.TEXTURE_2D, null);
   }
