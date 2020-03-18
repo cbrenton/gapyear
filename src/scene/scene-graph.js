@@ -34,8 +34,7 @@ export class SceneGraph {
   }
 
   /**
-   * Add a HUD element to be drawn with an orthographic projection on top.
-   * @TODO: update this description
+   * Add a HUD element to be drawn with an orthographic projection.
    * @param {Primitive} geom
    */
   addHUDElement(texture, programInfo) {
