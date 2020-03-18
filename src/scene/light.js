@@ -7,4 +7,8 @@ export class Light {
 
     this.tag = 'light';
   }
+
+  draw(gl, globalUniforms) {
+    throw Error('unimplemented method draw()');
+  }
 }

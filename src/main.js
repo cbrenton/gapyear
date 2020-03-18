@@ -23,9 +23,11 @@ function createSceneInfo(gl) {
   result.textures = createTextures(gl);
   result.render = {
     gbuffer: createGBuffer(gl),
+    lbuffer: createLBuffer(gl),
   };
   result.graph = createSimpleScene(gl, result.textures);
   result.graph.addGBufferToOverlay(result.render.gbuffer)
+  result.graph.addGBufferToOverlay(result.render.lbuffer)
   return result;
 }
 
@@ -41,6 +43,13 @@ function createGBuffer(gl) {
   return gbuffer;
 }
 
+function createLBuffer(gl) {
+  const attachments = ['result'];
+  const lbuffer = new GBuffer(gl);
+  lbuffer.init(attachments);
+  return lbuffer;
+}
+
 /**
  * Draw a single frame to the screen and request another.
  * @param {WebGL2RenderingContext} gl the webgl context
@@ -54,6 +63,7 @@ function drawFrame(gl, overlay, sceneInfo) {
   sceneInfo.graph.hud.enabled = window.showHUD;
 
   renderToBuffer(gl, sceneInfo.graph, sceneInfo.render.gbuffer);
+  renderToBuffer(gl, sceneInfo.graph, sceneInfo.render.lbuffer);
 
   renderOverlayToScreen(gl, sceneInfo.graph);
 
