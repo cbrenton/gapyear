@@ -73,10 +73,9 @@ export class SceneGraph {
   /**
    * Draw to the scene using the specified camera, or the default camera if none
    * is specified.
-   * @param {WebGL2RenderingContext} gl
    * @param {int} [cameraIndex] optional camera index
    */
-  draw(gl, cameraIndex) {
+  draw(cameraIndex) {
     if (cameraIndex === undefined) {
       cameraIndex = this.defaultCamera;
     }
@@ -100,16 +99,16 @@ export class SceneGraph {
       u_texture: this.blankTexture,
     };
     for (const el of this.geometry.main) {
-      el.draw(gl, globalUniforms);
+      el.draw(globalUniforms);
     }
     // @TODO: add a way to render lights and cameras as geometry when needed
   }
 
   /**
    * Draw all overlay geometry with depth testing disabled.
-   * @param {WebGL2RenderingContext} gl
    */
-  drawOverlay(gl) {
+  drawOverlay() {
+    const gl = this.gl;
     gl.disable(gl.DEPTH_TEST);
     // Draw overlay geometry (on-screen view)
     const overlayGlobalUniforms = {
@@ -118,7 +117,7 @@ export class SceneGraph {
       u_cameraPos: v3.create(0, 0, 0),
     };
     for (const el of this.geometry.overlay) {
-      el.draw(gl, overlayGlobalUniforms);
+      el.draw(overlayGlobalUniforms);
     }
     gl.enable(gl.DEPTH_TEST);
   }

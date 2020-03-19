@@ -34,10 +34,10 @@ export class ScreenAlignedQuad {
     this.geometry = plane;
   }
 
-  draw(gl, globalUniforms) {
+  draw(globalUniforms) {
     if (this.geometry == null) {
       throw Error('ScreenAlignedQuad must be initialized before drawing');
     }
-    this.geometry.draw(gl, globalUniforms);
+    this.geometry.draw(globalUniforms);
   }
 }

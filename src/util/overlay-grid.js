@@ -34,11 +34,10 @@ export class OverlayGrid {
 
   /**
    * Render using a WebGL context and a specific camera.
-   * @param {WebGL2RenderingContext} gl
    * @param {Object} globalUniforms uniforms passed from SceneGraph applicable
    *     to all overlay objects
    */
-  draw(gl, globalUniforms) {
+  draw(globalUniforms) {
     if (!this.enabled) {
       return;
     }
@@ -46,7 +45,7 @@ export class OverlayGrid {
     // @TODO: move Plane construction to initialization, not render time
     const screenScale = 0.4;
     const screenPadding = 0.05;
-    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
 
     // Start drawing in top right corner
     const screenOffsetX = -(screenScale + screenPadding) * aspect;
@@ -76,8 +75,8 @@ export class OverlayGrid {
       const shaderInfo = this.items[i].shaderInfo;
 
       const plane =
-          new Primitive(gl, 'plane', shaderInfo, mat, screenTransform);
-      plane.draw(gl, globalUniforms);
+          new Primitive(this.gl, 'plane', shaderInfo, mat, screenTransform);
+      plane.draw(globalUniforms);
     }
   }
 }

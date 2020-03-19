@@ -49,12 +49,12 @@ export class Primitive {
 
   /**
    * Render using a WebGL context and a specific camera.
-   * @param {WebGL2RenderingContext} gl
    * @param {Object} globalUniforms uniforms passed from SceneGraph applicable
    *     to all objects
    */
-  draw(gl, globalUniforms) {
+  draw(globalUniforms) {
     util.drawBuffer(
-        gl, this.programInfo, this.bufferInfo, this.uniforms, globalUniforms);
+        this.gl, this.programInfo, this.bufferInfo, this.uniforms,
+        globalUniforms);
   }
 }

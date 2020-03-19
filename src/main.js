@@ -84,7 +84,7 @@ function renderToScreen(gl, graph) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.enable(gl.DEPTH_TEST);
 
-  graph.draw(gl);
+  graph.draw();
 }
 
 function renderOverlayToScreen(gl, graph) {
@@ -93,7 +93,7 @@ function renderOverlayToScreen(gl, graph) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.enable(gl.DEPTH_TEST);
 
-  graph.drawOverlay(gl);
+  graph.drawOverlay();
 }
 
 /**
@@ -108,6 +108,6 @@ function renderToBuffer(gl, graph, buffer) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.enable(gl.DEPTH_TEST);
 
-  graph.draw(gl);
+  graph.draw();
   buffer.unbind();
 }
