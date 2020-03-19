@@ -1,7 +1,8 @@
 'use strict';
 
 export class Light {
-  constructor(position, color) {
+  constructor(gl, position, color) {
+    this.gl = gl;
     this.position = position;
     this.color = color;
 

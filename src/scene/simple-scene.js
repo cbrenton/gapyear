@@ -11,13 +11,13 @@ import {createShaders, randomTransform} from 'util/scene-helpers.js';
 import gbufferShader from 'shaders/gbuffer.js';
 
 export function createSimpleScene(gl, textures) {
-  const graph = new SceneGraph();
+  const graph = new SceneGraph(gl);
 
   createCameras(gl, graph);
 
-  createLights(graph);
+  createLights(gl, graph);
 
-  createGeometry(graph, textures);
+  createGeometry(gl, graph, textures);
 
   return graph;
 }
@@ -34,13 +34,13 @@ function createCameras(gl, graph) {
   graph.addCamera(camera);
 }
 
-function createLights(graph) {
+function createLights(gl, graph) {
   const lightPos = v3.create(10, 10, 10);
-  const light = new Light(lightPos, v3.create(1, 1, 1));
+  const light = new Light(gl, lightPos, v3.create(1, 1, 1));
   graph.addLight(light);
 }
 
-function createGeometry(graph, textures) {
+function createGeometry(gl, graph, textures) {
   const gbufferInfo = createShaders(gl, gbufferShader);
 
   const numCubes = 10;
@@ -49,7 +49,7 @@ function createGeometry(graph, textures) {
     const cubeMat = new Material();
     cubeMat.randomize();
     cubeMat.shininess = 32.0;
-    const cube = new Primitive('cube', gbufferInfo, cubeMat, cubeTransform);
+    const cube = new Primitive(gl, 'cube', gbufferInfo, cubeMat, cubeTransform);
     graph.addGeom(cube);
   }
 
@@ -59,7 +59,7 @@ function createGeometry(graph, textures) {
     const sphereMat = new Material();
     sphereMat.randomize();
     const sphere =
-        new Primitive('sphere', gbufferInfo, sphereMat, sphereTransform);
+        new Primitive(gl, 'sphere', gbufferInfo, sphereMat, sphereTransform);
     graph.addGeom(sphere);
   }
 
@@ -68,7 +68,8 @@ function createGeometry(graph, textures) {
   const planeMat = new Material();
   planeMat.randomize('monochrome');
   planeMat.addTexture(textures.checkerboardTexture);
-  const plane = new Primitive('plane', gbufferInfo, planeMat, planeTransform);
+  const plane =
+      new Primitive(gl, 'plane', gbufferInfo, planeMat, planeTransform);
   graph.addGeom(plane);
 }
 

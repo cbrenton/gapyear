@@ -7,24 +7,26 @@ import {Material} from 'scene/material.js'
 
 export class Primitive {
   /**
+   * @param {WebGL2RenderingContext} gl
    * @param {string} type one of 'cube', 'sphere', 'plane'
    * @param {WebGLProgram} programInfo
    * @param {Material} material
    * @param {m4} transform
    */
-  constructor(type, programInfo, material, transform) {
+  constructor(gl, type, programInfo, material, transform) {
+    this.gl = gl;
     if (transform === undefined) {
       transform = m4.identity();
     }
     switch (type) {
       case 'cube':
-        this.bufferInfo = primitives.createCubeBufferInfo(gl, 1);
+        this.bufferInfo = primitives.createCubeBufferInfo(this.gl, 1);
         break;
       case 'sphere':
-        this.bufferInfo = primitives.createSphereBufferInfo(gl, 1, 24, 12);
+        this.bufferInfo = primitives.createSphereBufferInfo(this.gl, 1, 24, 12);
         break;
       case 'plane':
-        this.bufferInfo = primitives.createPlaneBufferInfo(gl, 1, 1);
+        this.bufferInfo = primitives.createPlaneBufferInfo(this.gl, 1, 1);
         break;
       default:
         throw Error(`Undefined primitive ${type}`);

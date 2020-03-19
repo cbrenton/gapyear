@@ -6,9 +6,10 @@ import {OverlayGrid} from 'util/overlay-grid.js';
 import {ScreenAlignedQuad} from 'util/screen-aligned-quad.js';
 
 export class SceneGraph {
-  constructor() {
+  constructor(gl) {
+    this.gl = gl;
     this.lights = [];
-    this.hud = new OverlayGrid();
+    this.hud = new OverlayGrid(gl);
     this.geometry = {
       main: [],
       overlay: [this.hud],
@@ -42,8 +43,8 @@ export class SceneGraph {
     this.hud.addElement(texture, programInfo);
   }
 
-  addScreenAlignedQuad(texture) {
-    const quad = new ScreenAlignedQuad();
+  addScreenAlignedQuad(gl, texture) {
+    const quad = new ScreenAlignedQuad(gl);
     quad.init(texture);
     // Needs to be unshift because we draw overlay elements back to front.
     this.geometry.overlay.unshift(quad);

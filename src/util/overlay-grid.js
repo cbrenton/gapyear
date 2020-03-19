@@ -8,12 +8,13 @@ import {createShaders} from 'util/scene-helpers.js';
 import flatTextureShader from 'shaders/flatTexture.js';
 
 export class OverlayGrid {
-  constructor() {
+  constructor(gl) {
+    this.gl = gl;
     this.items = [];
     this.numRows = 3;
     this.numCols = 3;
     this.enabled = false;
-    this.defaultShader = createShaders(gl, flatTextureShader);
+    this.defaultShader = createShaders(this.gl, flatTextureShader);
   }
 
   /**
@@ -42,6 +43,7 @@ export class OverlayGrid {
       return;
     }
     // @TODO: move transform construction to initialization, not render time
+    // @TODO: move Plane construction to initialization, not render time
     const screenScale = 0.4;
     const screenPadding = 0.05;
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
@@ -73,7 +75,8 @@ export class OverlayGrid {
       mat.addTexture(this.items[i].texture);
       const shaderInfo = this.items[i].shaderInfo;
 
-      const plane = new Primitive('plane', shaderInfo, mat, screenTransform);
+      const plane =
+          new Primitive(gl, 'plane', shaderInfo, mat, screenTransform);
       plane.draw(gl, globalUniforms);
     }
   }

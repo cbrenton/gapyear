@@ -7,7 +7,8 @@ import {createShaders, degToRad} from 'util/scene-helpers.js';
 import flatTextureShader from 'shaders/flatTexture.js';
 
 export class ScreenAlignedQuad {
-  constructor() {
+  constructor(gl) {
+    this.gl = gl;
     this.geometry = null;
   }
 
@@ -28,8 +29,8 @@ export class ScreenAlignedQuad {
     if (texture !== undefined) {
       planeMat.addTexture(texture);
     }
-    const plane =
-        new Primitive('plane', flatTextureInfo, planeMat, planeTransform);
+    const plane = new Primitive(
+        this.gl, 'plane', flatTextureInfo, planeMat, planeTransform);
     this.geometry = plane;
   }
 
