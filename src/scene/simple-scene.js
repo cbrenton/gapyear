@@ -72,7 +72,7 @@ function createGeometry(graph, textures) {
   graph.addGeom(plane);
 }
 
-export function createTextures() {
+export function createTextures(gl) {
   const textures = {};
 
   const checkerboardTexture = gl.createTexture();
