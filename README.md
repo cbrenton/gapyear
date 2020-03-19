@@ -33,6 +33,9 @@ A deferred rendering engine in WebGL.
 - [ ] Combine l-buffer diffuse and specular to create final image.
 
 ### Other stuff
+- [ ] Add specular intensity to Material class.
+- [ ] Add specular intensity to Phong calculation.
+- [ ] Pack g-buffer info into 2 textures instead of 3 (diffuse.rgb + specular intensity, normal.xyz + shininess).
 - [ ] Integrate basic obj file loader (parse-obj.js from webgl-hello).
 - [ ] Add obj file to scene graph.
 - [ ] Add some heirarchical model to scene graph.
