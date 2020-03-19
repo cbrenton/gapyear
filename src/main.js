@@ -27,8 +27,8 @@ function createSceneInfo(gl) {
   };
   result.graph = createSimpleScene(gl, result.textures);
   result.graph.addScreenAlignedQuad(
-      gl, result.render.lbuffer.colorAttachments.result);
-  result.graph.addGBufferToOverlay(result.render.gbuffer)
+      result.render.lbuffer.colorAttachments.result);
+  result.graph.addGBufferToHUD(result.render.gbuffer)
   return result;
 }
 

@@ -8,10 +8,10 @@ import {ScreenAlignedQuad} from 'util/screen-aligned-quad.js';
 export class SceneGraph {
   constructor(gl) {
     this.gl = gl;
-    this.lights = [];
-    this.hud = new OverlayGrid(gl);
+    this.hud = new OverlayGrid(this.gl);
     this.geometry = {
       main: [],
+      lights: [],
       overlay: [this.hud],
     };
     this.cameras = [];
@@ -35,16 +35,8 @@ export class SceneGraph {
     this.geometry.main.push(geom);
   }
 
-  /**
-   * Add a HUD element to be drawn with an orthographic projection.
-   * @param {Primitive} geom
-   */
-  addHUDElement(texture, programInfo) {
-    this.hud.addElement(texture, programInfo);
-  }
-
-  addScreenAlignedQuad(gl, texture) {
-    const quad = new ScreenAlignedQuad(gl);
+  addScreenAlignedQuad(texture) {
+    const quad = new ScreenAlignedQuad(this.gl);
     quad.init(texture);
     // Needs to be unshift because we draw overlay elements back to front.
     this.geometry.overlay.unshift(quad);
@@ -55,27 +47,27 @@ export class SceneGraph {
    * @param {Light} light
    */
   addLight(light) {
-    this.lights.push(light);
+    this.geometry.lights.push(light);
   }
-
 
   /**
    * Add the textures from a GBuffer as HUD elements.
    * @param {GBuffer} gbuffer
    */
-  addGBufferToOverlay(gbuffer) {
+  addGBufferToHUD(gbuffer) {
     for (let el in gbuffer.colorAttachments) {
-      this.addHUDElement(gbuffer.colorAttachments[el]);
+      this.hud.addElement(gbuffer.colorAttachments[el]);
     }
-    this.addHUDElement(gbuffer.depthAttachment);
+    this.hud.addElement(gbuffer.depthAttachment);
   }
 
   /**
    * Draw to the scene using the specified camera, or the default camera if none
    * is specified.
+   * @param {WebGLProgram} programInfo
    * @param {int} [cameraIndex] optional camera index
    */
-  draw(cameraIndex) {
+  draw(programInfo, cameraIndex) {
     if (cameraIndex === undefined) {
       cameraIndex = this.defaultCamera;
     }
@@ -84,7 +76,7 @@ export class SceneGraph {
       throw new Error('no camera exists in scene.');
     }
 
-    const light = this.lights[0];
+    const light = this.geometry.lights[0];
     if (light === undefined) {
       throw new Error('no lights exist in scene.')
     }
@@ -108,8 +100,7 @@ export class SceneGraph {
    * Draw all overlay geometry with depth testing disabled.
    */
   drawOverlay() {
-    const gl = this.gl;
-    gl.disable(gl.DEPTH_TEST);
+    this.gl.disable(this.gl.DEPTH_TEST);
     // Draw overlay geometry (on-screen view)
     const overlayGlobalUniforms = {
       u_viewMatrix: m4.identity(),
@@ -119,6 +110,6 @@ export class SceneGraph {
     for (const el of this.geometry.overlay) {
       el.draw(overlayGlobalUniforms);
     }
-    gl.enable(gl.DEPTH_TEST);
+    this.gl.enable(this.gl.DEPTH_TEST);
   }
 }
