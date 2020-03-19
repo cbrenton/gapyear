@@ -22,14 +22,13 @@ A deferred rendering engine in WebGL.
 - [x] Display albedo + normal + specular contrib + depth buffers in debug window.
 
 ### L-buffer
-- [ ] Display two l-buffer textures in debug window.
 - [ ] Render a sphere to FBO for each point light (debug).
 - [ ] Render all geometry in light's sphere of influence as white to FBO (debug).
 - [ ] Render diffuse to l-buffer FBO.
 - [ ] Render specular to l-buffer FBO.
 
 ### Final pass
-- [ ] Render textured quad to screen.
+- [x] Render textured quad to screen.
 - [ ] Combine l-buffer diffuse and specular to create final image.
 
 ### Other stuff

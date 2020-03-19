@@ -2,7 +2,8 @@
 
 import {v3, m4} from 'twgl.js';
 import {createBlankTexture} from 'util/scene-helpers.js';
-import {OverlayGrid} from 'util/overlay-grid';
+import {OverlayGrid} from 'util/overlay-grid.js';
+import {ScreenAlignedQuad} from 'util/screen-aligned-quad.js';
 
 export class SceneGraph {
   constructor() {
@@ -39,6 +40,13 @@ export class SceneGraph {
    */
   addHUDElement(texture, programInfo) {
     this.hud.addElement(texture, programInfo);
+  }
+
+  addScreenAlignedQuad(texture) {
+    const quad = new ScreenAlignedQuad();
+    quad.init(texture);
+    // Needs to be unshift because we draw overlay elements back to front.
+    this.geometry.overlay.unshift(quad);
   }
 
   /**

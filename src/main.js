@@ -26,8 +26,9 @@ function createSceneInfo(gl) {
     lbuffer: createLBuffer(gl),
   };
   result.graph = createSimpleScene(gl, result.textures);
+  result.graph.addScreenAlignedQuad(
+      result.render.lbuffer.colorAttachments.result);
   result.graph.addGBufferToOverlay(result.render.gbuffer)
-  result.graph.addGBufferToOverlay(result.render.lbuffer)
   return result;
 }
 
