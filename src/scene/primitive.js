@@ -1,6 +1,6 @@
 'use strict';
 
-import {v3, m4, primitives} from 'twgl.js';
+import {m4, primitives} from 'twgl.js';
 
 import * as util from 'util/scene-helpers.js';
 import {Material} from 'scene/material.js'
@@ -16,7 +16,6 @@ export class Primitive {
     if (transform === undefined) {
       transform = m4.identity();
     }
-    this.position = v3.create();
     switch (type) {
       case 'cube':
         this.bufferInfo = primitives.createCubeBufferInfo(gl, 1);
