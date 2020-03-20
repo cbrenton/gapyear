@@ -35,7 +35,7 @@ function createSceneInfo(gl) {
 }
 
 /**
- * Create and initialize a gbuffer. Uses only one attachment for now.
+ * Create and initialize a gbuffer.
  * @param {WebGL2RenderingContext} gl
  * @return {GBuffer}
  */
@@ -46,11 +46,15 @@ function createGBuffer(gl) {
   return gbuffer;
 }
 
+/**
+ * Create and initialize a gbuffer for lighting results.
+ * @param {WebGL2RenderingContext} gl
+ * @return {GBuffer}
+ */
 function createLBuffer(gl) {
   const attachments = ['result'];
   const lbuffer = new GBuffer(gl, lBufferShader);
-  // @TODO: change this to lights once lights extend Renderable
-  lbuffer.init(attachments, 'main');
+  lbuffer.init(attachments, 'lights');
   return lbuffer;
 }
 

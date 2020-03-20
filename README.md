@@ -22,7 +22,7 @@ A deferred rendering engine in WebGL.
 - [x] Display albedo + normal + specular contrib + depth buffers in debug window.
 
 ### L-buffer
-- [ ] Render a sphere to FBO for a single point light (debug).
+- [x] Render a sphere to FBO for a single point light (debug).
 - [ ] Render all geometry in light's sphere of influence as white to FBO (debug).
 - [ ] Render diffuse to l-buffer FBO.
 - [ ] Render specular to l-buffer FBO.

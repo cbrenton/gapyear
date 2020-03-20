@@ -35,9 +35,17 @@ function createCameras(gl, graph) {
 }
 
 function createLights(gl, graph) {
-  const lightPos = v3.create(10, 10, 10);
-  const light = new Light(gl, lightPos, v3.create(1, 1, 1));
-  graph.addLight(light);
+  const lights = {
+    0: v3.create(1, 0, 0),
+    1: v3.create(0, 1, 0),
+    2: v3.create(0, 0, 1),
+  };
+  for (const lightNdx in lights) {
+    const lightPos = v3.create(-3 + lightNdx * 3, 0, 0);
+    const lightColor = lights[lightNdx];
+    const light = new Light(gl, lightPos, lightColor);
+    graph.addLight(light);
+  }
 }
 
 function createGeometry(gl, graph, textures) {
