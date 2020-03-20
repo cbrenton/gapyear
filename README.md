@@ -23,6 +23,7 @@ A deferred rendering engine in WebGL.
 
 ### L-buffer
 - [x] Render a sphere to FBO for a single point light (debug).
+- [ ] Pass a single texture from g-buffer to l-buffer.
 - [ ] Render all geometry in light's sphere of influence as white to FBO (debug).
 - [ ] Render diffuse to l-buffer FBO.
 - [ ] Render specular to l-buffer FBO.
