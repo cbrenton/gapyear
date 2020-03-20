@@ -4,7 +4,7 @@ import {m4, v3} from 'twgl.js';
 import {degToRad} from 'util/scene-helpers.js';
 import {Primitive} from 'scene/primitive.js';
 import {Material} from 'scene/material.js';
-import flatTextureShader from 'shaders/flatTexture.js';
+import flatTextureShader from 'shaders/flat-texture.js';
 import {Renderable} from 'scene/renderable.js';
 
 export class OverlayGrid extends Renderable {
