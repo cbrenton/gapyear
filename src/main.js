@@ -5,7 +5,7 @@ import {GBuffer} from 'util/gbuffer.js';
 import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene, createTextures} from 'scene/simple-scene.js';
 import gBufferShader from 'shaders/gbuffer.js';
-import phongShader from 'shaders/phong.js';
+import lBufferShader from 'shaders/lbuffer.js';
 
 window.onload = function() {
   const label = 'Hello WebGL!';
@@ -48,7 +48,7 @@ function createGBuffer(gl) {
 
 function createLBuffer(gl) {
   const attachments = ['result'];
-  const lbuffer = new GBuffer(gl, phongShader);
+  const lbuffer = new GBuffer(gl, lBufferShader);
   // @TODO: change this to lights once lights extend Renderable
   lbuffer.init(attachments, 'main');
   return lbuffer;
