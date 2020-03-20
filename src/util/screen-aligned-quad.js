@@ -3,41 +3,35 @@
 import {m4, v3} from 'twgl.js';
 import {Primitive} from 'scene/primitive.js';
 import {Material} from 'scene/material';
-import {createShaders, degToRad} from 'util/scene-helpers.js';
+import {degToRad} from 'util/scene-helpers.js';
 import flatTextureShader from 'shaders/flatTexture.js';
 
-export class ScreenAlignedQuad {
+export class ScreenAlignedQuad extends Primitive {
   constructor(gl) {
-    this.gl = gl;
-    this.geometry = null;
+    super(
+        gl, flatTextureShader, 'plane', new Material(),
+        ScreenAlignedQuad.createScreenTransform_());
   }
 
   /**
-   * Initialize this object's geometry field as an untextured quad. Must be
-   * called before draw().
+   * Create the transform to make this plane fill the screen.
+   * @return {m4}
    */
-  init(texture) {
-    const flatTextureInfo = createShaders(gl, flatTextureShader);
-
-    const planeTransform = m4.identity();
-    m4.rotateX(planeTransform, degToRad(-90), planeTransform);
+  static createScreenTransform_() {
+    const transform = m4.identity();
+    m4.rotateX(transform, degToRad(-90), transform);
     const screenScale = 2.0;
     m4.scale(
-        planeTransform, v3.create(screenScale, screenScale, screenScale),
-        planeTransform);
-    const planeMat = new Material();
-    if (texture !== undefined) {
-      planeMat.addTexture(texture);
-    }
-    const plane = new Primitive(
-        this.gl, 'plane', flatTextureInfo, planeMat, planeTransform);
-    this.geometry = plane;
+        transform, v3.create(screenScale, screenScale, screenScale), transform);
+    return transform;
   }
 
-  draw(globalUniforms) {
-    if (this.geometry == null) {
-      throw Error('ScreenAlignedQuad must be initialized before drawing');
+  /**
+   * Initialize this object's geometry field as an untextured quad.
+   */
+  init(texture) {
+    if (texture !== undefined) {
+      this.material.addTexture(texture);
     }
-    this.geometry.draw(globalUniforms);
   }
 }

@@ -95,7 +95,7 @@ export class SceneGraph {
       u_texture: this.blankTexture,
     };
     for (const el of this.geometry[geometryType]) {
-      el.draw(globalUniforms);
+      el.drawWithProgramInfo(globalUniforms, programInfo);
     }
     // @TODO: add a way to render lights and cameras as geometry when needed
   }

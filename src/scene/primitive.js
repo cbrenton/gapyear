@@ -4,20 +4,18 @@ import {m4, primitives} from 'twgl.js';
 
 import * as util from 'util/scene-helpers.js';
 import {Material} from 'scene/material.js'
+import {Renderable} from 'scene/renderable.js';
 
-export class Primitive {
+export class Primitive extends Renderable {
   /**
    * @param {WebGL2RenderingContext} gl
+   * @param {string{}} shaders a dict of {fs: `glsl...`, vs: `glsl...`}
    * @param {string} type one of 'cube', 'sphere', 'plane'
-   * @param {WebGLProgram} programInfo
    * @param {Material} material
    * @param {m4} transform
    */
-  constructor(gl, type, programInfo, material, transform) {
-    this.gl = gl;
-    if (transform === undefined) {
-      transform = m4.identity();
-    }
+  constructor(gl, shaders, type, material, transform) {
+    super(gl, shaders, transform);
     switch (type) {
       case 'cube':
         this.bufferInfo = primitives.createCubeBufferInfo(this.gl, 1);
@@ -33,8 +31,12 @@ export class Primitive {
     }
     this.tag = `primitive.${type}`;
     this.material = material;
-    this.transform = transform;
-    this.programInfo = programInfo;
+  }
+
+  // @TODO: eventually replace this with transform(t) overridden from Renderable
+  // interface
+  get transform() {
+    return this.initialTransform;
   }
 
   get uniforms() {
@@ -52,9 +54,9 @@ export class Primitive {
    * @param {Object} globalUniforms uniforms passed from SceneGraph applicable
    *     to all objects
    */
-  draw(globalUniforms) {
+  draw(globalUniforms, overrideProgramInfo) {
+    const programInfo = overrideProgramInfo || this.programInfo;
     util.drawBuffer(
-        this.gl, this.programInfo, this.bufferInfo, this.uniforms,
-        globalUniforms);
+        this.gl, programInfo, this.bufferInfo, this.uniforms, globalUniforms);
   }
 }

@@ -3,31 +3,31 @@
 import {m4, v3} from 'twgl.js';
 import {degToRad} from 'util/scene-helpers.js';
 import {Primitive} from 'scene/primitive.js';
-import {Material} from 'scene/material';
-import {createShaders} from 'util/scene-helpers.js';
+import {Material} from 'scene/material.js';
 import flatTextureShader from 'shaders/flatTexture.js';
+import {Renderable} from 'scene/renderable.js';
 
-export class OverlayGrid {
+export class OverlayGrid extends Renderable {
   constructor(gl) {
-    this.gl = gl;
+    super(gl, flatTextureShader);
     this.items = [];
     this.numRows = 3;
     this.numCols = 3;
     this.enabled = false;
-    this.defaultShader = createShaders(this.gl, flatTextureShader);
+    this.defaultShader = flatTextureShader;
   }
 
   /**
    * Add a screen to the grid.
    * @param {WebGLTexture} texture
-   * @param {WebGLProgram} shaderInfo defaults to this.defaultShader
+   * @param {Shader} shader defaults to this.defaultShader
    */
-  addElement(texture, shaderInfo) {
-    shaderInfo = shaderInfo || this.defaultShader;
+  addElement(texture, shader) {
+    shader = shader || this.defaultShader;
 
     const el = {
       texture: texture,
-      shaderInfo: shaderInfo,
+      shader: shader,
     };
     this.items.push(el);
   }
@@ -37,7 +37,7 @@ export class OverlayGrid {
    * @param {Object} globalUniforms uniforms passed from SceneGraph applicable
    *     to all overlay objects
    */
-  draw(globalUniforms) {
+  draw(globalUniforms, overrideProgramInfo) {
     if (!this.enabled) {
       return;
     }
@@ -72,11 +72,11 @@ export class OverlayGrid {
 
       const mat = new Material();
       mat.addTexture(this.items[i].texture);
-      const shaderInfo = this.items[i].shaderInfo;
+      const shader = this.items[i].shader;
 
       const plane =
-          new Primitive(this.gl, 'plane', shaderInfo, mat, screenTransform);
-      plane.draw(globalUniforms);
+          new Primitive(this.gl, shader, 'plane', mat, screenTransform);
+      plane.draw(globalUniforms, overrideProgramInfo);
     }
   }
 }
