@@ -64,16 +64,20 @@ export class SceneGraph {
   /**
    * Draw to the scene using the specified camera, or the default camera if none
    * is specified.
+   * @param {string} geometryType one of 'main', 'lights', or 'overlay'
    * @param {WebGLProgram} programInfo
    * @param {int} [cameraIndex] optional camera index
    */
-  draw(programInfo, cameraIndex) {
+  draw(geometryType, programInfo, cameraIndex) {
     if (cameraIndex === undefined) {
       cameraIndex = this.defaultCamera;
     }
     const mainCamera = this.cameras[cameraIndex];
     if (mainCamera === undefined) {
       throw new Error('no camera exists in scene.');
+    }
+    if (!(geometryType in this.geometry)) {
+      throw new Error(`geometry type ${geometryType} doesn't exist in scene`);
     }
 
     const light = this.geometry.lights[0];
@@ -90,7 +94,7 @@ export class SceneGraph {
       u_lightColor: light.color,
       u_texture: this.blankTexture,
     };
-    for (const el of this.geometry.main) {
+    for (const el of this.geometry[geometryType]) {
       el.draw(globalUniforms);
     }
     // @TODO: add a way to render lights and cameras as geometry when needed

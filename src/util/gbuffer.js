@@ -1,11 +1,14 @@
 'use strict';
 
+import {createShaders} from 'util/scene-helpers.js';
+
 export class GBuffer {
-  constructor(gl) {
+  constructor(gl, shader) {
     this.gl = gl;
     this.w = this.gl.canvas.clientWidth;
     this.h = this.gl.canvas.clientHeight;
     this.fbo = null;
+    this.programInfo = createShaders(this.gl, shader);
     this.colorAttachments = {};
   }
 
@@ -14,9 +17,16 @@ export class GBuffer {
    * validate the framebuffer.
    * Warning: will unbind texture.
    * @param {string[]} colorAttachments
+   * @param {string} geometryType one of 'main', 'overlay', or 'lights'
    */
-  init(colorAttachments) {
+  init(colorAttachments, geometryType) {
     this.fbo = this.gl.createFramebuffer();
+    // @TODO: make this not hardcoded
+    const types = {main: 0, lights: 0};
+    if (!(geometryType in types)) {
+      throw new Error(`g-buffer geometry type "${geometryType}" unsupported`);
+    }
+    this.geometryType = geometryType;
 
     this.bindAndSetViewport();
     this.initColorAttachments(colorAttachments);

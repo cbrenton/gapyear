@@ -4,6 +4,8 @@ import * as util from 'util/scene-helpers.js';
 import {GBuffer} from 'util/gbuffer.js';
 import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene, createTextures} from 'scene/simple-scene.js';
+import gBufferShader from 'shaders/gbuffer.js';
+import phongShader from 'shaders/phong.js';
 
 window.onload = function() {
   const label = 'Hello WebGL!';
@@ -39,15 +41,16 @@ function createSceneInfo(gl) {
  */
 function createGBuffer(gl) {
   const attachments = ['albedo', 'normal', 'shininess'];
-  const gbuffer = new GBuffer(gl);
-  gbuffer.init(attachments);
+  const gbuffer = new GBuffer(gl, gBufferShader);
+  gbuffer.init(attachments, 'main');
   return gbuffer;
 }
 
 function createLBuffer(gl) {
   const attachments = ['result'];
-  const lbuffer = new GBuffer(gl);
-  lbuffer.init(attachments);
+  const lbuffer = new GBuffer(gl, phongShader);
+  // @TODO: change this to lights once lights extend Renderable
+  lbuffer.init(attachments, 'main');
   return lbuffer;
 }
 
@@ -73,20 +76,6 @@ function drawFrame(gl, overlay, sceneInfo) {
   });
 }
 
-/**
- * Render to the screen, not a framebuffer.
- * @param {WebGL2RenderingContext} gl
- * @param {SceneGraph} graph
- */
-function renderToScreen(gl, graph) {
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-  gl.clearColor(0.58, 0.78, 0.85, 1);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  gl.enable(gl.DEPTH_TEST);
-
-  graph.draw();
-}
-
 function renderOverlayToScreen(gl, graph) {
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.clearColor(0.58, 0.78, 0.85, 1);
@@ -108,6 +97,6 @@ function renderToBuffer(gl, graph, buffer) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.enable(gl.DEPTH_TEST);
 
-  graph.draw();
+  graph.draw(buffer.geometryType, buffer.programInfo);
   buffer.unbind();
 }
