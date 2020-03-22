@@ -1,7 +1,7 @@
 'use strict';
 
 import * as util from 'util/scene-helpers.js';
-import {GBuffer} from 'util/gbuffer.js';
+import {GBuffer} from 'render/gbuffer.js';
 import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene} from 'scene/simple-scene.js';
 import {TextureManager} from 'managers/texture-manager.js';
