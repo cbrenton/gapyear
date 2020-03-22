@@ -4,12 +4,13 @@ import {m4, v3} from 'twgl.js';
 import {Primitive} from 'scene/primitive.js';
 import {Material} from 'scene/material';
 import {degToRad} from 'util/scene-helpers.js';
-import flatTextureShader from 'shaders/flat-texture.js';
+import {ShaderManager} from 'managers/shader-manager.js';
 
 export class ScreenAlignedQuad extends Primitive {
   constructor(gl) {
+    const flatTexture = ShaderManager.get('flatTexture');
     super(
-        gl, flatTextureShader, 'plane', new Material(),
+        gl, flatTexture, 'plane', new Material(),
         ScreenAlignedQuad.createScreenTransform_());
   }
 

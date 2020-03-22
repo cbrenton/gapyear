@@ -3,16 +3,15 @@
 // @TODO: move this into a more appropriate dir
 
 import {m4} from 'twgl.js';
-import {createShaders} from 'util/scene-helpers.js';
 
 export class Renderable {
-  constructor(gl, shaders, initialTransform) {
+  constructor(gl, programInfo, initialTransform) {
     if (initialTransform === undefined) {
       initialTransform = m4.identity();
     }
 
     this.gl = gl;
-    this.programInfo = createShaders(this.gl, shaders);
+    this.programInfo = programInfo;
     this.initialTransform = initialTransform;
   }
 
@@ -20,9 +19,10 @@ export class Renderable {
    * Render using a WebGL context and a specific camera.
    * @param {Object} globalUniforms uniforms passed from SceneGraph applicable
    *     to all objects
+   * @param {WebGLProgram} overrideProgramInfo
    */
-  drawWithProgramInfo(globalUniforms, programInfo) {
-    this.draw(globalUniforms, programInfo);
+  drawWithProgramInfo(globalUniforms, overrideProgramInfo) {
+    this.draw(globalUniforms, overrideProgramInfo);
   }
 
   draw(globalUniforms, overrideProgramInfo) {

@@ -53,10 +53,6 @@ export function getOverlay() {
   return overlay.getContext('2d');
 }
 
-export function createShaders(gl, shaders) {
-  return twgl.createProgramInfo(gl, [shaders.vs, shaders.fs]);
-}
-
 export function drawBuffer(
     gl, programInfo, bufferInfo, uniforms, globalUniforms) {
   gl.useProgram(programInfo.program);

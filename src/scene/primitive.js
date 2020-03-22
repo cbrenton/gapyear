@@ -9,13 +9,13 @@ import {Renderable} from 'scene/renderable.js';
 export class Primitive extends Renderable {
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {string{}} shaders a dict of {fs: `glsl...`, vs: `glsl...`}
+   * @param {WebGLProgram} programInfo
    * @param {string} type one of 'cube', 'sphere', 'plane'
    * @param {Material} material
    * @param {m4} transform
    */
-  constructor(gl, shaders, type, material, transform) {
-    super(gl, shaders, transform);
+  constructor(gl, programInfo, type, material, transform) {
+    super(gl, programInfo, transform);
     switch (type) {
       case 'cube':
         this.bufferInfo = primitives.createCubeBufferInfo(this.gl, 1);

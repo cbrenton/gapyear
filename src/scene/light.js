@@ -3,7 +3,7 @@
 import {m4} from 'twgl.js';
 import {Material} from 'scene/material.js';
 import {Primitive} from 'scene/primitive.js';
-import flatTextureShader from 'shaders/flat-texture.js';
+import {ShaderManager} from 'managers/shader-manager.js';
 
 export class Light extends Primitive {
   constructor(gl, position, color) {
@@ -12,7 +12,9 @@ export class Light extends Primitive {
     const material = new Material();
     material.setAllColors(color);
 
-    super(gl, flatTextureShader, 'sphere', material, initialTransform);
+    super(
+        gl, ShaderManager.get('flatTexture'), 'sphere', material,
+        initialTransform);
 
     this.position = position;
     this.color = color;

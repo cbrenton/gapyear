@@ -1,6 +1,6 @@
 'use strict';
 
-import {createShaders} from 'util/scene-helpers.js';
+import {createProgramInfo} from 'twgl.js';
 import flatTextureShader from 'shaders/flat-texture.js';
 import gBufferShader from 'shaders/gbuffer.js';
 import lBufferShader from 'shaders/lbuffer.js';
@@ -28,7 +28,8 @@ function loadShaders(gl) {
 
   const result = {};
   for (let shaderName in shaders) {
-    result[shaderName] = createShaders(gl, shaders[shaderName]);
+    result[shaderName] =
+        createProgramInfo(gl, [shaders[shaderName].vs, shaders[shaderName].fs]);
   }
   return result;
 }

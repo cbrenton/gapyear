@@ -4,30 +4,31 @@ import {m4, v3} from 'twgl.js';
 import {degToRad} from 'util/scene-helpers.js';
 import {Primitive} from 'scene/primitive.js';
 import {Material} from 'scene/material.js';
-import flatTextureShader from 'shaders/flat-texture.js';
 import {Renderable} from 'scene/renderable.js';
+import {ShaderManager} from 'managers/shader-manager.js';
 
 export class OverlayGrid extends Renderable {
   constructor(gl) {
-    super(gl, flatTextureShader);
+    const flatTexture = ShaderManager.get('flatTexture');
+    super(gl, flatTexture);
     this.items = [];
     this.numRows = 3;
     this.numCols = 3;
     this.enabled = false;
-    this.defaultShader = flatTextureShader;
+    this.defaultProgram = flatTexture;
   }
 
   /**
    * Add a screen to the grid.
    * @param {WebGLTexture} texture
-   * @param {Shader} shader defaults to this.defaultShader
+   * @param {WebGLProgram} programInfo defaults to this.defaultProgram
    */
-  addElement(texture, shader) {
-    shader = shader || this.defaultShader;
+  addElement(texture, programInfo) {
+    programInfo = programInfo || this.defaultProgram;
 
     const el = {
       texture: texture,
-      shader: shader,
+      programInfo: programInfo,
     };
     this.items.push(el);
   }
@@ -72,11 +73,11 @@ export class OverlayGrid extends Renderable {
 
       const mat = new Material();
       mat.addTexture(this.items[i].texture);
-      const shader = this.items[i].shader;
+      const programInfo = this.items[i].programInfo;
 
       const plane =
-          new Primitive(this.gl, shader, 'plane', mat, screenTransform);
-      plane.draw(globalUniforms, overrideProgramInfo);
+          new Primitive(this.gl, programInfo, 'plane', mat, screenTransform);
+      plane.drawWithProgramInfo(globalUniforms, overrideProgramInfo);
     }
   }
 }
