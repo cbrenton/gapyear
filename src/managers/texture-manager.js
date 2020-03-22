@@ -2,6 +2,9 @@
 
 export const TextureManager = {
   init: function(gl) {
+    if (this.textures !== undefined) {
+      throw new Error('TextureManager is already initialized');
+    }
     this.textures = createTextures(gl);
   }
 }
