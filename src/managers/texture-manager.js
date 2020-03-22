@@ -1,11 +1,13 @@
 'use strict';
 
+import {GLContextManager} from 'managers/gl-context-manager.js';
+
 export const TextureManager = {
-  init: function(gl) {
+  init: function() {
     if (this.textures !== undefined) {
       throw new Error('TextureManager is already initialized');
     }
-    this.textures = createTextures(gl);
+    this.textures = createTextures(GLContextManager.gl);
   }
 };
 

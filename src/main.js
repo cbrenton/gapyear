@@ -6,10 +6,13 @@ import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene} from 'scene/simple-scene.js';
 import {TextureManager} from 'managers/texture-manager.js';
 import {ShaderManager} from 'managers/shader-manager.js';
+import {GLContextManager} from 'managers/gl-context-manager.js';
 
 window.onload = function() {
-  const label = 'Hello WebGL!';
-  const gl = util.createGLCanvas(label);
+  GLContextManager.init('Hello WebGL!');
+  TextureManager.init();
+  ShaderManager.init();
+  const gl = GLContextManager.gl;
   const overlay = util.getOverlay();
   const sceneInfo = createSceneInfo(gl);
   window.showHUD = true;
@@ -21,8 +24,6 @@ window.onload = function() {
  * @return {SimpleScene}
  */
 function createSceneInfo(gl) {
-  TextureManager.init(gl);
-  ShaderManager.init(gl);
   const result = {};
   result.render = {
     gbuffer: createGBuffer(gl),
