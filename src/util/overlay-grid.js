@@ -14,7 +14,7 @@ export class OverlayGrid extends Renderable {
     this.numRows = 3;
     this.numCols = 3;
     this.enabled = false;
-    this.defaultProgram = ShaderManager.get('flatTexture');
+    this.defaultProgram = ShaderManager.shader('flatTexture');
   }
 
   /**

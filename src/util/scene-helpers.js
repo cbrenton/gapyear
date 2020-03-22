@@ -83,15 +83,6 @@ export function randomColor(hue) {
   return colorVec;
 }
 
-export function createBlankTexture() {
-  const blankTexture = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, blankTexture);
-  gl.texImage2D(
-      gl.TEXTURE_2D, 0, gl.LUMINANCE, 1, 1, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE,
-      new Uint8Array([0xFF]));
-  return blankTexture;
-}
-
 export function randomTransform(yMin, zMax) {
   let transform = m4.identity();
 

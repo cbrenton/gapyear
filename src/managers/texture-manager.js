@@ -3,11 +3,18 @@
 import {GLContextManager} from 'managers/gl-context-manager.js';
 
 export const TextureManager = {
-  init: function() {
-    if (this.textures !== undefined) {
-      throw new Error('TextureManager is already initialized');
+  init_: function() {
+    if (this.textures_ === undefined) {
+      this.textures_ = createTextures(GLContextManager.gl);
     }
-    this.textures = createTextures(GLContextManager.gl);
+  },
+  texture: function(textureName) {
+    this.init_();
+    return this.textures_[textureName];
+  },
+  get textures() {
+    this.init_();
+    return this.textures_;
   }
 };
 
@@ -47,6 +54,14 @@ function createTextures(gl) {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
   textures.blackCheckerboardTexture = blackCheckerboardTexture;
+
+  const blankTexture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, blankTexture);
+  gl.texImage2D(
+      gl.TEXTURE_2D, 0, gl.LUMINANCE, 1, 1, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE,
+      new Uint8Array([0xFF]));
+
+  textures.blankTexture = blankTexture;
 
   gl.bindTexture(gl.TEXTURE_2D, null);
 

@@ -1,9 +1,9 @@
 'use strict';
 
 import {v3, m4} from 'twgl.js';
-import {createBlankTexture} from 'util/scene-helpers.js';
 import {OverlayGrid} from 'util/overlay-grid.js';
 import {ScreenAlignedQuad} from 'util/screen-aligned-quad.js';
+import {TextureManager} from 'managers/texture-manager.js';
 
 export class SceneGraph {
   constructor(gl) {
@@ -16,7 +16,7 @@ export class SceneGraph {
     };
     this.cameras = [];
     this.defaultCamera = 0;
-    this.blankTexture = createBlankTexture();
+    this.blankTexture = TextureManager.texture('blankTexture');
   }
 
   /**

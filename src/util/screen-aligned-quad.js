@@ -11,7 +11,7 @@ export class ScreenAlignedQuad extends Primitive {
     super(
         gl, 'plane', new Material(),
         ScreenAlignedQuad.createScreenTransform_());
-    this.defaultProgram = ShaderManager.get('flatTexture');
+    this.defaultProgram = ShaderManager.shader('flatTexture');
   }
 
   /**

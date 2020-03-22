@@ -9,9 +9,6 @@ import {ShaderManager} from 'managers/shader-manager.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
 
 window.onload = function() {
-  GLContextManager.init('Hello WebGL!');
-  TextureManager.init();
-  ShaderManager.init();
   const gl = GLContextManager.gl;
   const overlay = util.getOverlay();
   const sceneInfo = createSceneInfo(gl);
@@ -43,7 +40,7 @@ function createSceneInfo(gl) {
  */
 function createGBuffer(gl) {
   const attachments = ['albedo', 'normal', 'shininess'];
-  const gbuffer = new GBuffer(gl, ShaderManager.get('gBuffer'));
+  const gbuffer = new GBuffer(gl, ShaderManager.shader('gBuffer'));
   gbuffer.init(attachments, 'main');
   return gbuffer;
 }
@@ -55,7 +52,7 @@ function createGBuffer(gl) {
  */
 function createLBuffer(gl) {
   const attachments = ['result'];
-  const lbuffer = new GBuffer(gl, ShaderManager.get('lBuffer'));
+  const lbuffer = new GBuffer(gl, ShaderManager.shader('lBuffer'));
   lbuffer.init(attachments, 'lights');
   return lbuffer;
 }

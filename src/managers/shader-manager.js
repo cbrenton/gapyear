@@ -8,14 +8,14 @@ import phongShader from 'shaders/phong.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
 
 export const ShaderManager = {
-  init: function() {
-    if (this.shaders !== undefined) {
-      throw new Error('ShaderManager is already initialized');
+  init_: function() {
+    if (this.shaders_ === undefined) {
+      this.shaders_ = loadShaders(GLContextManager.gl);
     }
-    this.shaders = loadShaders(GLContextManager.gl);
   },
-  get: function(shaderName) {
-    return this.shaders[shaderName];
+  shader: function(shaderName) {
+    this.init_();
+    return this.shaders_[shaderName];
   },
 };
 

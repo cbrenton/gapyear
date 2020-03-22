@@ -3,10 +3,13 @@
 import {createGLCanvas} from 'util/scene-helpers.js';
 
 export const GLContextManager = {
-  init: function(label) {
-    if (this.gl !== undefined) {
-      throw new Error('GLContextManager is already initialized');
+  init_: function() {
+    if (this.gl_ === undefined) {
+      this.gl_ = createGLCanvas('GAPYEAR');
     }
-    this.gl = createGLCanvas(label);
+  },
+  get gl() {
+    this.init_();
+    return this.gl_;
   }
 };
