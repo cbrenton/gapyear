@@ -1,14 +1,12 @@
 'use strict';
 
-import {createShaders} from 'util/scene-helpers.js';
-
 export class GBuffer {
-  constructor(gl, shader) {
+  constructor(gl, programInfo) {
     this.gl = gl;
     this.w = this.gl.canvas.clientWidth;
     this.h = this.gl.canvas.clientHeight;
     this.fbo = null;
-    this.programInfo = createShaders(this.gl, shader);
+    this.programInfo = programInfo;
     this.colorAttachments = {};
   }
 

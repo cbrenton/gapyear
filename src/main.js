@@ -4,9 +4,8 @@ import * as util from 'util/scene-helpers.js';
 import {GBuffer} from 'util/gbuffer.js';
 import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene} from 'scene/simple-scene.js';
-import gBufferShader from 'shaders/gbuffer.js';
-import lBufferShader from 'shaders/lbuffer.js';
 import {TextureManager} from 'managers/texture-manager.js';
+import {ShaderManager} from 'managers/shader-manager.js';
 
 window.onload = function() {
   const label = 'Hello WebGL!';
@@ -22,12 +21,13 @@ window.onload = function() {
  * @return {SimpleScene}
  */
 function createSceneInfo(gl) {
+  TextureManager.init(gl);
+  ShaderManager.init(gl);
   const result = {};
   result.render = {
     gbuffer: createGBuffer(gl),
     lbuffer: createLBuffer(gl),
   };
-  TextureManager.init(gl);
   result.graph = createSimpleScene(gl, TextureManager.textures);
   result.graph.addScreenAlignedQuad(
       result.render.lbuffer.colorAttachments.result);
@@ -42,7 +42,7 @@ function createSceneInfo(gl) {
  */
 function createGBuffer(gl) {
   const attachments = ['albedo', 'normal', 'shininess'];
-  const gbuffer = new GBuffer(gl, gBufferShader);
+  const gbuffer = new GBuffer(gl, ShaderManager.get('gBuffer'));
   gbuffer.init(attachments, 'main');
   return gbuffer;
 }
@@ -54,7 +54,7 @@ function createGBuffer(gl) {
  */
 function createLBuffer(gl) {
   const attachments = ['result'];
-  const lbuffer = new GBuffer(gl, lBufferShader);
+  const lbuffer = new GBuffer(gl, ShaderManager.get('lBuffer'));
   lbuffer.init(attachments, 'lights');
   return lbuffer;
 }
