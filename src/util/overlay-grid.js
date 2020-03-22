@@ -35,7 +35,7 @@ export class OverlayGrid extends Renderable {
   /**
    * Render using a WebGL context and a specific camera, using each element's
    * individual shader.
-   * @param {Object} globalUniforms uniforms passed from SceneGraph applicable
+   * @param {Object} globalUniforms uniforms passed from SceneManager applicable
    *     to all overlay objects
    */
   draw(globalUniforms) {

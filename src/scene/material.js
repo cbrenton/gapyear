@@ -48,7 +48,7 @@ export class Material {
   /**
    * Add a texture to this material.
    * NOTE: if no texture is set, a default texture needs to be set in global
-   * uniforms (right now that happens in SceneGraph)
+   * uniforms (right now that happens in SceneManager)
    * @param {WebGLTexture} tex
    */
   addTexture(tex) {

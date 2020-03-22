@@ -6,7 +6,7 @@ import {ScreenAlignedQuad} from 'util/screen-aligned-quad.js';
 import {TextureManager} from 'managers/texture-manager.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
 
-export class SceneGraph {
+export class SceneManager {
   constructor() {
     this.gl = GLContextManager.gl;
     this.hud = new OverlayGrid(this.gl);

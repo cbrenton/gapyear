@@ -16,7 +16,7 @@ export class Renderable {
 
   /**
    * Render using a WebGL context and a specific camera.
-   * @param {Object} globalUniforms uniforms passed from SceneGraph applicable
+   * @param {Object} globalUniforms uniforms passed from SceneManager applicable
    *     to all objects
    * @param {WebGLProgram} overrideProgramInfo
    */

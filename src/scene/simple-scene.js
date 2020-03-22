@@ -2,7 +2,7 @@
 
 import {v3, m4} from 'twgl.js';
 
-import {SceneGraph} from 'scene/scene-graph.js';
+import {SceneManager} from 'managers/scene-manager.js';
 import {Camera} from 'scene/camera.js';
 import {Light} from 'scene/light.js';
 import {Primitive} from 'scene/primitive.js';
@@ -10,7 +10,7 @@ import {Material} from 'scene/material.js';
 import {randomTransform} from 'util/scene-helpers.js';
 
 export function createSimpleScene(gl, textures) {
-  const graph = new SceneGraph();
+  const graph = new SceneManager();
 
   createCameras(gl, graph);
 

@@ -91,7 +91,7 @@ function renderOverlayToScreen(gl, graph) {
 /**
  * Render to a framebuffer, not the screen.
  * @param {WebGL2RenderingContext} gl
- * @param {SceneGraph} graph
+ * @param {SceneManager} graph
  * @param {GBuffer} buffer
  */
 function renderToBuffer(gl, graph, buffer) {
