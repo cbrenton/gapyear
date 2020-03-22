@@ -1,8 +1,8 @@
 'use strict';
 
 import {v3, m4} from 'twgl.js';
-import {OverlayGrid} from 'util/overlay-grid.js';
-import {ScreenAlignedQuad} from 'util/screen-aligned-quad.js';
+import {OverlayGrid} from 'scene/overlay-grid.js';
+import {ScreenAlignedQuad} from 'scene/screen-aligned-quad.js';
 import {TextureManager} from 'managers/texture-manager.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
 
