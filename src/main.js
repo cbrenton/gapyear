@@ -3,9 +3,10 @@
 import * as util from 'util/scene-helpers.js';
 import {GBuffer} from 'util/gbuffer.js';
 import {logFrame} from 'util/fps-counter.js';
-import {createSimpleScene, createTextures} from 'scene/simple-scene.js';
+import {createSimpleScene} from 'scene/simple-scene.js';
 import gBufferShader from 'shaders/gbuffer.js';
 import lBufferShader from 'shaders/lbuffer.js';
+import {TextureManager} from 'managers/texture-manager.js';
 
 window.onload = function() {
   const label = 'Hello WebGL!';
@@ -22,12 +23,12 @@ window.onload = function() {
  */
 function createSceneInfo(gl) {
   const result = {};
-  result.textures = createTextures(gl);
   result.render = {
     gbuffer: createGBuffer(gl),
     lbuffer: createLBuffer(gl),
   };
-  result.graph = createSimpleScene(gl, result.textures);
+  TextureManager.init(gl);
+  result.graph = createSimpleScene(gl, TextureManager.textures);
   result.graph.addScreenAlignedQuad(
       result.render.lbuffer.colorAttachments.result);
   result.graph.addGBufferToHUD(result.render.gbuffer)
