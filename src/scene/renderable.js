@@ -5,13 +5,12 @@
 import {m4} from 'twgl.js';
 
 export class Renderable {
-  constructor(gl, programInfo, initialTransform) {
+  constructor(gl, initialTransform) {
     if (initialTransform === undefined) {
       initialTransform = m4.identity();
     }
 
     this.gl = gl;
-    this.programInfo = programInfo;
     this.initialTransform = initialTransform;
   }
 

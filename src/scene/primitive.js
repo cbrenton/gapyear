@@ -14,8 +14,8 @@ export class Primitive extends Renderable {
    * @param {Material} material
    * @param {m4} transform
    */
-  constructor(gl, programInfo, type, material, transform) {
-    super(gl, programInfo, transform);
+  constructor(gl, type, material, transform) {
+    super(gl, transform);
     switch (type) {
       case 'cube':
         this.bufferInfo = primitives.createCubeBufferInfo(this.gl, 1);
@@ -55,8 +55,8 @@ export class Primitive extends Renderable {
    *     to all objects
    */
   draw(globalUniforms, overrideProgramInfo) {
-    const programInfo = overrideProgramInfo || this.programInfo;
     util.drawBuffer(
-        this.gl, programInfo, this.bufferInfo, this.uniforms, globalUniforms);
+        this.gl, overrideProgramInfo, this.bufferInfo, this.uniforms,
+        globalUniforms);
   }
 }

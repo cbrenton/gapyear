@@ -12,9 +12,7 @@ export class Light extends Primitive {
     const material = new Material();
     material.setAllColors(color);
 
-    super(
-        gl, ShaderManager.get('flatTexture'), 'sphere', material,
-        initialTransform);
+    super(gl, 'sphere', material, initialTransform);
 
     this.position = position;
     this.color = color;

@@ -8,10 +8,10 @@ import {ShaderManager} from 'managers/shader-manager.js';
 
 export class ScreenAlignedQuad extends Primitive {
   constructor(gl) {
-    const flatTexture = ShaderManager.get('flatTexture');
     super(
-        gl, flatTexture, 'plane', new Material(),
+        gl, 'plane', new Material(),
         ScreenAlignedQuad.createScreenTransform_());
+    this.defaultProgram = ShaderManager.get('flatTexture');
   }
 
   /**
@@ -34,5 +34,14 @@ export class ScreenAlignedQuad extends Primitive {
     if (texture !== undefined) {
       this.material.addTexture(texture);
     }
+  }
+
+  /**
+   * Render using a WebGL context and a specific camera.
+   * @param {Object} globalUniforms uniforms passed from SceneGraph applicable
+   *     to all overlay objects
+   */
+  draw(globalUniforms) {
+    super.draw(globalUniforms, this.defaultProgram)
   }
 }

@@ -9,13 +9,12 @@ import {ShaderManager} from 'managers/shader-manager.js';
 
 export class OverlayGrid extends Renderable {
   constructor(gl) {
-    const flatTexture = ShaderManager.get('flatTexture');
-    super(gl, flatTexture);
+    super(gl);
     this.items = [];
     this.numRows = 3;
     this.numCols = 3;
     this.enabled = false;
-    this.defaultProgram = flatTexture;
+    this.defaultProgram = ShaderManager.get('flatTexture');
   }
 
   /**
@@ -34,11 +33,12 @@ export class OverlayGrid extends Renderable {
   }
 
   /**
-   * Render using a WebGL context and a specific camera.
+   * Render using a WebGL context and a specific camera, using each element's
+   * individual shader.
    * @param {Object} globalUniforms uniforms passed from SceneGraph applicable
    *     to all overlay objects
    */
-  draw(globalUniforms, overrideProgramInfo) {
+  draw(globalUniforms) {
     if (!this.enabled) {
       return;
     }
@@ -75,9 +75,8 @@ export class OverlayGrid extends Renderable {
       mat.addTexture(this.items[i].texture);
       const programInfo = this.items[i].programInfo;
 
-      const plane =
-          new Primitive(this.gl, programInfo, 'plane', mat, screenTransform);
-      plane.drawWithProgramInfo(globalUniforms, overrideProgramInfo);
+      const plane = new Primitive(this.gl, 'plane', mat, screenTransform);
+      plane.drawWithProgramInfo(globalUniforms, programInfo);
     }
   }
 }
