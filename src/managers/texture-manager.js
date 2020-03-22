@@ -7,7 +7,7 @@ export const TextureManager = {
     }
     this.textures = createTextures(gl);
   }
-}
+};
 
 function createTextures(gl) {
   const textures = {};

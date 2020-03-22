@@ -16,7 +16,7 @@ export const ShaderManager = {
   get: function(shaderName) {
     return this.shaders[shaderName];
   },
-}
+};
 
 function loadShaders(gl) {
   const shaders = {
