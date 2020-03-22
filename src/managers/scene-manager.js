@@ -96,7 +96,7 @@ export class SceneManager {
       u_texture: this.blankTexture,
     };
     for (const el of this.geometry[geometryType]) {
-      el.drawWithProgramInfo(globalUniforms, programInfo);
+      el.draw(globalUniforms, programInfo);
     }
     // @TODO: add a way to render lights and cameras as geometry when needed
   }

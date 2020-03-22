@@ -4,9 +4,9 @@ import {m4, primitives} from 'twgl.js';
 
 import * as util from 'util/scene-helpers.js';
 import {Material} from 'scene/material.js'
-import {Renderable} from 'scene/renderable.js';
+import {RenderableInterface} from 'scene/renderable-interface.js';
 
-export class Primitive extends Renderable {
+export class Primitive extends RenderableInterface {
   /**
    * @param {WebGL2RenderingContext} gl
    * @param {WebGLProgram} programInfo

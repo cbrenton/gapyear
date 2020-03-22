@@ -1,10 +1,8 @@
 'use strict';
 
-// @TODO: move this into a more appropriate dir
-
 import {m4} from 'twgl.js';
 
-export class Renderable {
+export class RenderableInterface {
   constructor(gl, initialTransform) {
     if (initialTransform === undefined) {
       initialTransform = m4.identity();
@@ -20,10 +18,6 @@ export class Renderable {
    *     to all objects
    * @param {WebGLProgram} overrideProgramInfo
    */
-  drawWithProgramInfo(globalUniforms, overrideProgramInfo) {
-    this.draw(globalUniforms, overrideProgramInfo);
-  }
-
   draw(globalUniforms, overrideProgramInfo) {
     throw new Error('unimplemented draw()');
   }

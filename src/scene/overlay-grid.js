@@ -4,10 +4,10 @@ import {m4, v3} from 'twgl.js';
 import {degToRad} from 'util/scene-helpers.js';
 import {Primitive} from 'scene/primitive.js';
 import {Material} from 'scene/material.js';
-import {Renderable} from 'scene/renderable.js';
+import {RenderableInterface} from 'scene/renderable-interface.js';
 import {ShaderManager} from 'managers/shader-manager.js';
 
-export class OverlayGrid extends Renderable {
+export class OverlayGrid extends RenderableInterface {
   constructor(gl) {
     super(gl);
     this.items = [];
@@ -76,7 +76,7 @@ export class OverlayGrid extends Renderable {
       const programInfo = this.items[i].programInfo;
 
       const plane = new Primitive(this.gl, 'plane', mat, screenTransform);
-      plane.drawWithProgramInfo(globalUniforms, programInfo);
+      plane.draw(globalUniforms, programInfo);
     }
   }
 }
