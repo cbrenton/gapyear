@@ -10,7 +10,7 @@ import {Material} from 'scene/material.js';
 import {randomTransform} from 'util/scene-helpers.js';
 
 export function createSimpleScene(gl, textures) {
-  const graph = new SceneGraph(gl);
+  const graph = new SceneGraph();
 
   createCameras(gl, graph);
 

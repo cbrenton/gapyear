@@ -4,10 +4,11 @@ import {v3, m4} from 'twgl.js';
 import {OverlayGrid} from 'util/overlay-grid.js';
 import {ScreenAlignedQuad} from 'util/screen-aligned-quad.js';
 import {TextureManager} from 'managers/texture-manager.js';
+import {GLContextManager} from 'managers/gl-context-manager.js';
 
 export class SceneGraph {
-  constructor(gl) {
-    this.gl = gl;
+  constructor() {
+    this.gl = GLContextManager.gl;
     this.hud = new OverlayGrid(this.gl);
     this.geometry = {
       main: [],
