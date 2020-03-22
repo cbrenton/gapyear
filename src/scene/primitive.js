@@ -27,7 +27,7 @@ export class Primitive extends Renderable {
         this.bufferInfo = primitives.createPlaneBufferInfo(this.gl, 1, 1);
         break;
       default:
-        throw Error(`Undefined primitive ${type}`);
+        throw new Error(`Undefined primitive ${type}`);
     }
     this.tag = `primitive.${type}`;
     this.material = material;

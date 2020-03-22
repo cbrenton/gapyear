@@ -26,6 +26,6 @@ export class Renderable {
   }
 
   draw(globalUniforms, overrideProgramInfo) {
-    throw Error('unimplemented draw()');
+    throw new Error('unimplemented draw()');
   }
 }

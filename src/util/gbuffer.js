@@ -106,7 +106,7 @@ export class GBuffer {
     this.bindAndSetViewport();
     const e = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
     if (e !== gl.FRAMEBUFFER_COMPLETE) {
-      throw Error(`incomplete fbo: ${e.toString()}`);
+      throw new Error(`incomplete fbo: ${e.toString()}`);
     }
     this.unbind();
   }
