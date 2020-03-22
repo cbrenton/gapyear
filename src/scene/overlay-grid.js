@@ -26,10 +26,45 @@ export class OverlayGrid extends RenderableInterface {
     programInfo = programInfo || this.defaultProgram;
 
     const el = {
-      texture: texture,
+      geom: this.createScreenGeometry_(texture),
       programInfo: programInfo,
     };
     this.items.push(el);
+  }
+
+  createScreenGeometry_(texture) {
+    const i = this.items.length;
+
+    const screenScale = 0.4;
+    const screenPadding = 0.05;
+    const aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
+
+    // Start drawing in top right corner
+    const screenOffsetX = -(screenScale + screenPadding) * aspect;
+    const screenOffsetY = -(screenScale * this.numRows) / 2;
+
+    // Draw in reverse order
+    const col = this.numCols - (i % this.numCols);
+    const row = this.numRows - parseInt(i / this.numRows);
+
+    const translateDistanceX =
+        screenOffsetX + (screenScale + screenPadding) * row;
+    const translateDistanceY =
+        screenOffsetY + (screenScale + screenPadding) * col;
+
+    const screenTransform = m4.identity();
+    m4.translate(
+        screenTransform, v3.create(translateDistanceX, translateDistanceY, 0),
+        screenTransform);
+    m4.rotateX(screenTransform, degToRad(-90), screenTransform);
+    m4.scale(
+        screenTransform, v3.create(screenScale, screenScale, screenScale),
+        screenTransform);
+
+    const mat = new Material();
+    mat.addTexture(texture);
+
+    return new Primitive(this.gl, 'plane', mat, screenTransform);
   }
 
   /**
@@ -42,40 +77,11 @@ export class OverlayGrid extends RenderableInterface {
     if (!this.enabled) {
       return;
     }
-    // @TODO: move transform construction to initialization, not render time
-    // @TODO: move Plane construction to initialization, not render time
-    const screenScale = 0.4;
-    const screenPadding = 0.05;
-    const aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
-
-    // Start drawing in top right corner
-    const screenOffsetX = -(screenScale + screenPadding) * aspect;
-    const screenOffsetY = -(screenScale * this.numRows) / 2;
 
     for (let i = 0; i < this.items.length; ++i) {
-      // Draw in reverse order
-      const col = this.numCols - (i % this.numCols);
-      const row = this.numRows - parseInt(i / this.numRows);
-
-      const translateDistanceX =
-          screenOffsetX + (screenScale + screenPadding) * row;
-      const translateDistanceY =
-          screenOffsetY + (screenScale + screenPadding) * col;
-
-      const screenTransform = m4.identity();
-      m4.translate(
-          screenTransform, v3.create(translateDistanceX, translateDistanceY, 0),
-          screenTransform);
-      m4.rotateX(screenTransform, degToRad(-90), screenTransform);
-      m4.scale(
-          screenTransform, v3.create(screenScale, screenScale, screenScale),
-          screenTransform);
-
-      const mat = new Material();
-      mat.addTexture(this.items[i].texture);
+      const plane = this.items[i].geom;
       const programInfo = this.items[i].programInfo;
 
-      const plane = new Primitive(this.gl, 'plane', mat, screenTransform);
       plane.draw(globalUniforms, programInfo);
     }
   }
