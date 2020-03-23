@@ -1,5 +1,6 @@
 'use strict';
 
+import {m4, v3} from 'twgl.js';
 import * as util from 'util/scene-helpers.js';
 import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene} from 'scene/simple-scene.js';
@@ -8,6 +9,7 @@ import {ShaderManager} from 'managers/shader-manager.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
 import {RenderPass} from 'render/render-pass.js';
 import {BufferTarget} from 'render/buffer-target.js';
+import {ScreenTarget} from 'render/screen-target.js';
 
 window.onload = function() {
   const gl = GLContextManager.gl;
@@ -27,6 +29,7 @@ function createSceneInfo(gl) {
   result.renderPasses = [
     createGBufferPass(gl, result.graph),
     createLBufferPass(gl, result.graph),
+    createOverlayPass(gl, result.graph),
   ];
   result.graph.addGBufferToHUD(result.renderPasses[0].renderTarget)
   result.graph.addScreenAlignedQuad(
@@ -85,6 +88,31 @@ function createLBufferPass(gl, sceneManager) {
   return lBufferPass;
 }
 
+function createOverlayPass(gl, sceneManager) {
+  const overlayTarget = new ScreenTarget(gl);
+
+  const overlayCamera = {
+    viewMatrix: m4.identity(),
+    projMatrix: m4.identity(),
+    position: v3.create(0, 0, 0),
+  };
+
+  const setUp = function(cb_gl) {
+    cb_gl.disable(cb_gl.DEPTH_TEST);
+    cb_gl.clearColor(0.58, 0.78, 0.85, 1);
+    cb_gl.clear(cb_gl.COLOR_BUFFER_BIT | cb_gl.DEPTH_BUFFER_BIT);
+  };
+
+  const tearDown = function(cb_gl) {
+    cb_gl.enable(cb_gl.DEPTH_TEST);
+  };
+
+  const overlayPass = new RenderPass(
+      gl, overlayTarget, ShaderManager.shader('flatTexture'),
+      sceneManager.geometry.overlay, overlayCamera, setUp, tearDown, {});
+  return overlayPass;
+}
+
 /**
  * Draw a single frame to the screen and request another.
  * @param {WebGL2RenderingContext} gl the webgl context
@@ -101,34 +129,7 @@ function drawFrame(gl, overlay, sceneInfo) {
     pass.render();
   }
 
-  renderOverlayToScreen(gl, sceneInfo.graph);
-
   requestAnimationFrame(function() {
     drawFrame(gl, overlay, sceneInfo);
   });
-}
-
-function renderOverlayToScreen(gl, graph) {
-  gl.viewport(0, 0, gl.canvas.clientWidth, gl.canvas.clientHeight);
-  gl.clearColor(0.58, 0.78, 0.85, 1);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  gl.enable(gl.DEPTH_TEST);
-
-  graph.drawOverlay();
-}
-
-/**
- * Render to a framebuffer, not the screen.
- * @param {WebGL2RenderingContext} gl
- * @param {SceneManager} graph
- * @param {GBuffer} buffer
- */
-function renderToBuffer(gl, graph, buffer) {
-  buffer.bindAndSetViewport();
-  gl.clearColor(0.58, 0.78, 0.85, 1);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  gl.enable(gl.DEPTH_TEST);
-
-  graph.draw(buffer.geometryType, buffer.programInfo);
-  buffer.unbind();
 }
