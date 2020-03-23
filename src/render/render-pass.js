@@ -22,6 +22,8 @@ export class RenderPass {
       u_projectionMatrix: this.camera.projMatrix,
       u_cameraPos: this.camera.position,
       u_texture: TextureManager.texture('blankTexture'),
+      u_resolutionX: this.renderTarget.width,
+      u_resolutionY: this.renderTarget.height,
     };
     for (let uniform in this.extraUniforms) {
       globalUniforms[uniform] = this.extraUniforms[uniform];
