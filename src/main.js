@@ -1,12 +1,13 @@
 'use strict';
 
 import * as util from 'util/scene-helpers.js';
-import {GBuffer} from 'render/gbuffer.js';
 import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene} from 'scene/simple-scene.js';
 import {TextureManager} from 'managers/texture-manager.js';
 import {ShaderManager} from 'managers/shader-manager.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
+import {RenderPass} from 'render/render-pass.js';
+import {BufferTarget} from 'render/buffer-target.js';
 
 window.onload = function() {
   const gl = GLContextManager.gl;
@@ -22,39 +23,66 @@ window.onload = function() {
  */
 function createSceneInfo(gl) {
   const result = {};
-  result.render = {
-    gbuffer: createGBuffer(gl),
-    lbuffer: createLBuffer(gl),
-  };
   result.graph = createSimpleScene(gl, TextureManager.textures);
+  result.renderPasses = [
+    createGBufferPass(gl, result.graph),
+    createLBufferPass(gl, result.graph),
+  ];
+  result.graph.addGBufferToHUD(result.renderPasses[0].renderTarget)
   result.graph.addScreenAlignedQuad(
-      result.render.lbuffer.colorAttachments.result);
-  result.graph.addGBufferToHUD(result.render.gbuffer)
+      result.renderPasses[1].renderTarget.colorAttachments.result);
   return result;
 }
 
 /**
- * Create and initialize a gbuffer.
+ * Create and initialize the gbuffer rendering pass.
  * @param {WebGL2RenderingContext} gl
- * @return {GBuffer}
+ * @param {SceneManager} sceneManager
+ * @return {RenderPass}
  */
-function createGBuffer(gl) {
+function createGBufferPass(gl, sceneManager) {
   const attachments = ['albedo', 'normal', 'shininess'];
-  const gbuffer = new GBuffer(gl, ShaderManager.shader('gBuffer'));
-  gbuffer.init(attachments, 'main');
-  return gbuffer;
+  const gBufferTarget = new BufferTarget(
+      gl, gl.canvas.clientWidth, gl.canvas.clientHeight, attachments);
+
+  const setUp = function(cb_gl) {
+    cb_gl.clearColor(0.58, 0.78, 0.85, 1);
+    cb_gl.clear(cb_gl.COLOR_BUFFER_BIT | cb_gl.DEPTH_BUFFER_BIT);
+    cb_gl.enable(cb_gl.DEPTH_TEST);
+  };
+
+  const tearDown = function() {};
+
+  const gBufferPass = new RenderPass(
+      gl, gBufferTarget, ShaderManager.shader('gBuffer'),
+      sceneManager.geometry.main, sceneManager.cameras[0], setUp, tearDown, {});
+  return gBufferPass;
 }
 
 /**
  * Create and initialize a gbuffer for lighting results.
+ * // @TODO update docstring
  * @param {WebGL2RenderingContext} gl
  * @return {GBuffer}
  */
-function createLBuffer(gl) {
+function createLBufferPass(gl, sceneManager) {
   const attachments = ['result'];
-  const lbuffer = new GBuffer(gl, ShaderManager.shader('lBuffer'));
-  lbuffer.init(attachments, 'lights');
-  return lbuffer;
+  const lBufferTarget = new BufferTarget(
+      gl, gl.canvas.clientWidth, gl.canvas.clientHeight, attachments);
+
+  const setUp = function(cb_gl) {
+    cb_gl.clearColor(0.58, 0.78, 0.85, 1);
+    cb_gl.clear(cb_gl.COLOR_BUFFER_BIT | cb_gl.DEPTH_BUFFER_BIT);
+    cb_gl.enable(cb_gl.DEPTH_TEST);
+  };
+
+  const tearDown = function() {};
+
+  const lBufferPass = new RenderPass(
+      gl, lBufferTarget, ShaderManager.shader('lBuffer'),
+      sceneManager.geometry.lights, sceneManager.cameras[0], setUp, tearDown,
+      {});
+  return lBufferPass;
 }
 
 /**
@@ -69,8 +97,9 @@ function drawFrame(gl, overlay, sceneInfo) {
 
   sceneInfo.graph.hud.enabled = window.showHUD;
 
-  renderToBuffer(gl, sceneInfo.graph, sceneInfo.render.gbuffer);
-  renderToBuffer(gl, sceneInfo.graph, sceneInfo.render.lbuffer);
+  for (const pass of sceneInfo.renderPasses) {
+    pass.render();
+  }
 
   renderOverlayToScreen(gl, sceneInfo.graph);
 
