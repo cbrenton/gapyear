@@ -36,14 +36,15 @@ function createCameras(gl, graph) {
 
 function createLights(gl, graph) {
   const lights = {
-    0: v3.create(1, 0, 0),
+    // 0: v3.create(1, 0, 0),
     1: v3.create(0, 1, 0),
-    2: v3.create(0, 0, 1),
+    // 2: v3.create(0, 0, 1),
   };
   for (const lightNdx in lights) {
-    const lightPos = v3.create(-3 + lightNdx * 3, 0, 0);
+    const lightPos = v3.create(-3 + lightNdx * 3, 0, -4);
     const lightColor = lights[lightNdx];
-    const light = new Light(gl, lightPos, lightColor);
+    const lightSize = 3.0;
+    const light = new Light(gl, lightPos, lightSize, lightColor);
     graph.addLight(light);
   }
 }
@@ -51,7 +52,7 @@ function createLights(gl, graph) {
 function createGeometry(gl, graph, textures) {
   const checkerboardTexture = TextureManager.texture('checkerboardTexture');
 
-  const numCubes = 10;
+  const numCubes = 0;
   for (let i = 0; i < numCubes; ++i) {
     const cubeTransform = randomTransform(0.0, 0.0);
     const cubeMat = new Material();
@@ -63,7 +64,9 @@ function createGeometry(gl, graph, textures) {
 
   const numSpheres = 10;
   for (let i = 0; i < numSpheres; ++i) {
-    const sphereTransform = randomTransform(0.0, 0.0);
+    const sphereTransform = m4.identity();
+    m4.translate(
+        sphereTransform, v3.create(-10 + i * 2, 0, -4), sphereTransform);
     const sphereMat = new Material();
     sphereMat.randomize();
     const sphere = new Primitive(gl, 'sphere', sphereMat, sphereTransform);
