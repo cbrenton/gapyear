@@ -78,12 +78,15 @@ function createLBufferPass(gl, sceneManager, gbuffer) {
       gl, gl.canvas.clientWidth, gl.canvas.clientHeight, attachments);
 
   const setUp = function(cb_gl) {
+    cb_gl.enable(cb_gl.CULL_FACE);
     cb_gl.clearColor(0.58, 0.78, 0.85, 1);
     cb_gl.clear(cb_gl.COLOR_BUFFER_BIT | cb_gl.DEPTH_BUFFER_BIT);
     cb_gl.enable(cb_gl.DEPTH_TEST);
   };
 
-  const tearDown = function() {};
+  const tearDown = function(cb_gl) {
+    cb_gl.disable(cb_gl.CULL_FACE);
+  };
 
   const uniforms = {
     u_albedoTexture: gbuffer.colorAttachments.albedo,
