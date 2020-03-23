@@ -50,16 +50,16 @@ function createGBufferPass(gl, sceneManager) {
   const gBufferTarget = new BufferTarget(
       gl, gl.canvas.clientWidth, gl.canvas.clientHeight, attachments);
 
-  const setUp = function(cb_gl) {
-    cb_gl.clearColor(0.58, 0.78, 0.85, 1);
-    cb_gl.clear(cb_gl.COLOR_BUFFER_BIT | cb_gl.DEPTH_BUFFER_BIT);
-    cb_gl.enable(cb_gl.DEPTH_TEST);
+  const setUp = function() {
+    gl.clearColor(0.58, 0.78, 0.85, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enable(gl.DEPTH_TEST);
   };
 
   const tearDown = function() {};
 
   const gBufferPass = new RenderPass(
-      gl, gBufferTarget, ShaderManager.shader('gBuffer'),
+      gBufferTarget, ShaderManager.shader('gBuffer'),
       sceneManager.geometry.main, sceneManager.cameras[0], setUp, tearDown, {});
   return gBufferPass;
 }
@@ -76,15 +76,15 @@ function createLBufferPass(gl, sceneManager, gbuffer) {
   const lBufferTarget = new BufferTarget(
       gl, gl.canvas.clientWidth, gl.canvas.clientHeight, attachments);
 
-  const setUp = function(cb_gl) {
-    cb_gl.enable(cb_gl.CULL_FACE);
-    cb_gl.clearColor(0.58, 0.78, 0.85, 1);
-    cb_gl.clear(cb_gl.COLOR_BUFFER_BIT | cb_gl.DEPTH_BUFFER_BIT);
-    cb_gl.enable(cb_gl.DEPTH_TEST);
+  const setUp = function() {
+    gl.enable(gl.CULL_FACE);
+    gl.clearColor(0.58, 0.78, 0.85, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enable(gl.DEPTH_TEST);
   };
 
-  const tearDown = function(cb_gl) {
-    cb_gl.disable(cb_gl.CULL_FACE);
+  const tearDown = function() {
+    gl.disable(gl.CULL_FACE);
   };
 
   const uniforms = {
@@ -94,7 +94,7 @@ function createLBufferPass(gl, sceneManager, gbuffer) {
   };
 
   const lBufferPass = new RenderPass(
-      gl, lBufferTarget, ShaderManager.shader('lBuffer'),
+      lBufferTarget, ShaderManager.shader('lBuffer'),
       sceneManager.geometry.lights, sceneManager.cameras[0], setUp, tearDown,
       uniforms);
   return lBufferPass;
@@ -115,18 +115,18 @@ function createOverlayPass(gl, sceneManager) {
     position: v3.create(0, 0, 0),
   };
 
-  const setUp = function(cb_gl) {
-    cb_gl.disable(cb_gl.DEPTH_TEST);
-    cb_gl.clearColor(0.58, 0.78, 0.85, 1);
-    cb_gl.clear(cb_gl.COLOR_BUFFER_BIT | cb_gl.DEPTH_BUFFER_BIT);
+  const setUp = function() {
+    gl.disable(gl.DEPTH_TEST);
+    gl.clearColor(0.58, 0.78, 0.85, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   };
 
-  const tearDown = function(cb_gl) {
-    cb_gl.enable(cb_gl.DEPTH_TEST);
+  const tearDown = function() {
+    gl.enable(gl.DEPTH_TEST);
   };
 
   const overlayPass = new RenderPass(
-      gl, overlayTarget, ShaderManager.shader('flatTexture'),
+      overlayTarget, ShaderManager.shader('flatTexture'),
       sceneManager.geometry.overlay, overlayCamera, setUp, tearDown, {});
   return overlayPass;
 }

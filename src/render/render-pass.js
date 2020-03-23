@@ -4,9 +4,9 @@ import {TextureManager} from 'managers/texture-manager.js';
 
 export class RenderPass {
   constructor(
-      gl, renderTarget, programInfo, renderables, camera, setUpFunc,
-      tearDownFunc, extraUniforms = {}) {
-    this.gl = gl;
+      renderTarget, programInfo, renderables, camera, setUpFunc, tearDownFunc,
+      // setUpPreBindFunc = function() {}, tearDownPreBindFunc = function() {},
+      extraUniforms = {}) {
     this.renderables = renderables;
     this.programInfo = programInfo;
     this.renderTarget = renderTarget;
@@ -34,11 +34,11 @@ export class RenderPass {
   render() {
     this.renderTarget.setUp();
 
-    this.setUp(this.gl);
+    this.setUp();
     for (const el of this.renderables) {
       el.draw(this.uniforms, this.programInfo);
     }
-    this.tearDown(this.gl);
+    this.tearDown();
 
     this.renderTarget.tearDown();
   }
