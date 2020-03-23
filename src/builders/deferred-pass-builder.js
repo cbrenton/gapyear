@@ -14,6 +14,13 @@ export function createDeferredPasses(gl, sceneManager) {
   ];
 }
 
+export function addPassResultsToOverlay(renderPasses, sceneManager) {
+  sceneManager.addGBufferToHUD(renderPasses[0].renderTarget)
+  sceneManager.addGBufferToHUD(renderPasses[1].renderTarget)
+  sceneManager.addScreenAlignedQuad(
+      renderPasses[1].renderTarget.colorAttachments.result);
+}
+
 /**
  * Create a render pass to hold gbuffer data.
  * @param {WebGL2RenderingContext} gl

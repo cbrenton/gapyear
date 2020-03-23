@@ -3,7 +3,7 @@
 import * as util from 'util/scene-helpers.js';
 import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene} from 'builders/simple-scene-builder.js';
-import {createDeferredPasses} from 'builders/deferred-pass-builder.js';
+import {createDeferredPasses, addPassResultsToOverlay} from 'builders/deferred-pass-builder.js';
 import {TextureManager} from 'managers/texture-manager.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
 
@@ -23,10 +23,7 @@ function createSceneInfo(gl) {
   const result = {};
   result.graph = createSimpleScene(gl, TextureManager.textures);
   result.renderPasses = createDeferredPasses(gl, result.graph);
-  result.graph.addGBufferToHUD(result.renderPasses[0].renderTarget)
-  result.graph.addGBufferToHUD(result.renderPasses[1].renderTarget)
-  result.graph.addScreenAlignedQuad(
-      result.renderPasses[1].renderTarget.colorAttachments.result);
+  addPassResultsToOverlay(result.renderPasses, result.graph);
   return result;
 }
 
