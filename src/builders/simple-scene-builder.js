@@ -8,15 +8,16 @@ import {Light} from 'scene/light.js';
 import {Primitive} from 'scene/primitive.js';
 import {Material} from 'scene/material.js';
 import {randomTransform} from 'util/scene-helpers.js';
+import {TextureManager} from 'managers/texture-manager.js';
 
-export function createSimpleScene(gl, textures) {
+export function createSimpleScene(gl) {
   const graph = new SceneManager();
 
   createCameras(gl, graph);
 
   createLights(gl, graph);
 
-  createGeometry(gl, graph, textures);
+  createGeometry(gl, graph);
 
   return graph;
 }
@@ -48,6 +49,8 @@ function createLights(gl, graph) {
 }
 
 function createGeometry(gl, graph, textures) {
+  const checkerboardTexture = TextureManager.texture('checkerboardTexture');
+
   const numCubes = 10;
   for (let i = 0; i < numCubes; ++i) {
     const cubeTransform = randomTransform(0.0, 0.0);
@@ -71,7 +74,7 @@ function createGeometry(gl, graph, textures) {
   m4.scale(planeTransform, [20, 20, 20], planeTransform);
   const planeMat = new Material();
   planeMat.randomize('monochrome');
-  planeMat.addTexture(textures.checkerboardTexture);
+  planeMat.addTexture(checkerboardTexture);
   const plane = new Primitive(gl, 'plane', planeMat, planeTransform);
   graph.addGeom(plane);
 }

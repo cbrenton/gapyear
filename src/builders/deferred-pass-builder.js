@@ -7,14 +7,18 @@ import {ShaderManager} from 'managers/shader-manager.js';
 import {RenderPass} from 'render/render-pass.js';
 
 export function createDeferredPasses(gl, sceneManager) {
-  return [
+  const passes = [
     createGBufferPass(gl, sceneManager),
     createLBufferPass(gl, sceneManager),
     createOverlayPass(gl, sceneManager),
   ];
+
+  addPassResultsToOverlay(passes, sceneManager);
+
+  return passes;
 }
 
-export function addPassResultsToOverlay(renderPasses, sceneManager) {
+function addPassResultsToOverlay(renderPasses, sceneManager) {
   sceneManager.addBufferAttachmentsToHUD(renderPasses[0].renderTarget)
   sceneManager.addBufferAttachmentsToHUD(renderPasses[1].renderTarget)
   sceneManager.addScreenAlignedQuad(

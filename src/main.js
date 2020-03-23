@@ -3,47 +3,36 @@
 import * as util from 'util/scene-helpers.js';
 import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene} from 'builders/simple-scene-builder.js';
-import {createDeferredPasses, addPassResultsToOverlay} from 'builders/deferred-pass-builder.js';
-import {TextureManager} from 'managers/texture-manager.js';
+import {createDeferredPasses} from 'builders/deferred-pass-builder.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
 
 window.onload = function() {
+  window.showHUD = true;
   const gl = GLContextManager.gl;
   const overlay = util.getOverlay();
-  const sceneInfo = createSceneInfo(gl);
-  window.showHUD = true;
-  drawFrame(gl, overlay, sceneInfo);
+  const scene = createSimpleScene(gl);
+  const renderPasses = createDeferredPasses(gl, scene);
+  drawFrame(gl, overlay, scene.hud, renderPasses);
 };
-
-/**
- * Create a scene graph holding all objects in the scene.
- * @return {Object}
- */
-function createSceneInfo(gl) {
-  const result = {};
-  result.graph = createSimpleScene(gl, TextureManager.textures);
-  result.renderPasses = createDeferredPasses(gl, result.graph);
-  addPassResultsToOverlay(result.renderPasses, result.graph);
-  return result;
-}
 
 /**
  * Draw a single frame to the screen and request another.
  * @param {WebGL2RenderingContext} gl the webgl context
  * @param {CanvasRenderingContext2D} overlay the 2d drawing context for the
  *     overlay
- * @param {Object} sceneInfo
+ * @param {OverlayGrid} hud the scene's HUD container, for enabling
+ * @param {RenderPass[]} renderPasses
  */
-function drawFrame(gl, overlay, sceneInfo) {
+function drawFrame(gl, overlay, hud, renderPasses) {
   logFrame(overlay);
 
-  sceneInfo.graph.hud.enabled = window.showHUD;
+  hud.enabled = window.showHUD;
 
-  for (const pass of sceneInfo.renderPasses) {
+  for (const pass of renderPasses) {
     pass.render();
   }
 
   requestAnimationFrame(function() {
-    drawFrame(gl, overlay, sceneInfo);
+    drawFrame(gl, overlay, hud, renderPasses);
   });
 }
