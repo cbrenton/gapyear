@@ -22,9 +22,7 @@ export class OverlayGrid extends RenderableInterface {
    * @param {WebGLTexture} texture
    * @param {WebGLProgram} programInfo defaults to this.defaultProgram
    */
-  addElement(texture, programInfo) {
-    programInfo = programInfo || this.defaultProgram;
-
+  addElement(texture, programInfo = this.defaultProgram) {
     const el = {
       geom: this.createScreenGeometry_(texture),
       programInfo: programInfo,
