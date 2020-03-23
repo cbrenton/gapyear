@@ -15,12 +15,23 @@ void main() {
   fs: `#version 300 es
 precision mediump float;
 
-uniform vec3 u_diffuseColor;
+uniform sampler2D u_albedoTexture;
+uniform sampler2D u_normalTexture;
+uniform sampler2D u_shininessTexture;
+
+uniform float u_resolutionX;
+uniform float u_resolutionY;
 
 out vec4 finalColor;
 
 void main() {
-  finalColor = vec4(u_diffuseColor, 1);
+  vec2 texcoord = vec2(gl_FragCoord.x / u_resolutionX, gl_FragCoord.y / u_resolutionY);
+
+  vec4 albedo = texture(u_albedoTexture, texcoord);
+  vec4 normal = texture(u_normalTexture, texcoord);
+  vec4 shininess = texture(u_shininessTexture, texcoord);
+
+  finalColor = albedo;
 }`,
 };
 

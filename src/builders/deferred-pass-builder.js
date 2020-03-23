@@ -8,11 +8,7 @@ import {RenderPass} from 'render/render-pass.js';
 
 export function createDeferredRenderer(gl, sceneManager) {
   const renderer = {
-    passes: [
-      createGBufferPass(gl, sceneManager),
-      createLBufferPass(gl, sceneManager),
-      createOverlayPass(gl, sceneManager),
-    ],
+    passes: createPasses(gl, sceneManager),
     render: function() {
       for (const renderPass of this.passes) {
         renderPass.render();
@@ -23,6 +19,18 @@ export function createDeferredRenderer(gl, sceneManager) {
   addPassResultsToOverlay(renderer.passes, sceneManager);
 
   return renderer;
+}
+
+function createPasses(gl, sceneManager) {
+  const gBufferPass = createGBufferPass(gl, sceneManager);
+  const lBufferPass =
+      createLBufferPass(gl, sceneManager, gBufferPass.renderTarget);
+  const overlayPass = createOverlayPass(gl, sceneManager);
+  return [
+    gBufferPass,
+    lBufferPass,
+    overlayPass,
+  ];
 }
 
 function addPassResultsToOverlay(renderPasses, sceneManager) {
@@ -61,9 +69,10 @@ function createGBufferPass(gl, sceneManager) {
  * Create a render pass to hold lighting results.
  * @param {WebGL2RenderingContext} gl
  * @param {SceneManager} sceneManager
+ * @param {BufferTarget} gbuffer the FBO from the gbuffer pass
  * @return {RenderPass}
  */
-function createLBufferPass(gl, sceneManager) {
+function createLBufferPass(gl, sceneManager, gbuffer) {
   const attachments = ['result'];
   const lBufferTarget = new BufferTarget(
       gl, gl.canvas.clientWidth, gl.canvas.clientHeight, attachments);
@@ -76,10 +85,16 @@ function createLBufferPass(gl, sceneManager) {
 
   const tearDown = function() {};
 
+  const uniforms = {
+    u_albedoTexture: gbuffer.colorAttachments.albedo,
+    u_normalTexture: gbuffer.colorAttachments.normal,
+    u_shininessTexture: gbuffer.colorAttachments.shininess,
+  };
+
   const lBufferPass = new RenderPass(
       gl, lBufferTarget, ShaderManager.shader('lBuffer'),
       sceneManager.geometry.lights, sceneManager.cameras[0], setUp, tearDown,
-      {});
+      uniforms);
   return lBufferPass;
 }
 
