@@ -78,6 +78,7 @@ function createLBufferPass(gl, sceneManager, gbuffer) {
 
   const setUp = function() {
     gl.enable(gl.CULL_FACE);
+    gl.cullFace(gl.FRONT);
     gl.clearColor(0.58, 0.78, 0.85, 1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.DEPTH_TEST);
@@ -85,6 +86,7 @@ function createLBufferPass(gl, sceneManager, gbuffer) {
 
   const tearDown = function() {
     gl.disable(gl.CULL_FACE);
+    gl.cullFace(gl.BACK);
   };
 
   const uniforms = {
