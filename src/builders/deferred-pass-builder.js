@@ -6,16 +6,23 @@ import {ScreenTarget} from 'render/screen-target.js';
 import {ShaderManager} from 'managers/shader-manager.js';
 import {RenderPass} from 'render/render-pass.js';
 
-export function createDeferredPasses(gl, sceneManager) {
-  const passes = [
-    createGBufferPass(gl, sceneManager),
-    createLBufferPass(gl, sceneManager),
-    createOverlayPass(gl, sceneManager),
-  ];
+export function createDeferredRenderer(gl, sceneManager) {
+  const renderer = {
+    passes: [
+      createGBufferPass(gl, sceneManager),
+      createLBufferPass(gl, sceneManager),
+      createOverlayPass(gl, sceneManager),
+    ],
+    render: function() {
+      for (const renderPass of this.passes) {
+        renderPass.render();
+      }
+    }
+  };
 
-  addPassResultsToOverlay(passes, sceneManager);
+  addPassResultsToOverlay(renderer.passes, sceneManager);
 
-  return passes;
+  return renderer;
 }
 
 function addPassResultsToOverlay(renderPasses, sceneManager) {
