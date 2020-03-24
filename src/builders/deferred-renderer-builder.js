@@ -46,7 +46,7 @@ function addPassResultsToOverlay(renderPasses, sceneManager) {
  * @return {RenderPass}
  */
 function createGBufferPass(gl, sceneManager) {
-  const attachments = ['albedo', 'normal', 'shininess'];
+  const attachments = ['albedo', 'normal', 'specular'];
   const gBufferTarget = new BufferTarget(
       gl, gl.canvas.clientWidth, gl.canvas.clientHeight, attachments);
 
@@ -92,7 +92,7 @@ function createLBufferPass(gl, sceneManager, gbuffer) {
   const uniforms = {
     u_albedoTexture: gbuffer.colorAttachments.albedo,
     u_normalTexture: gbuffer.colorAttachments.normal,
-    u_shininessTexture: gbuffer.colorAttachments.shininess,
+    u_specularTexture: gbuffer.colorAttachments.specular,
   };
 
   const lBufferPass = new RenderPass(

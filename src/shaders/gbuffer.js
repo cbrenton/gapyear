@@ -42,6 +42,8 @@ uniform vec3 u_specularColor;
 uniform vec3 u_ambientColor;
 uniform vec3 u_lightColor;
 uniform float u_shininess;
+uniform float u_shininessMax;
+uniform float u_specularIntensity;
 uniform sampler2D u_texture;
 
 layout(location = 0) out vec4 g_albedo;
@@ -51,7 +53,7 @@ layout(location = 2) out vec4 g_shininess;
 void main() {
   g_albedo = vec4(u_diffuseColor, 1) * texture(u_texture, v_texcoord);
   g_normal = vec4(normalize(v_normal), 1);
-  g_shininess = vec4(u_shininess / 256.0, 0, 0, 1);
+  g_shininess = vec4(u_shininess / u_shininessMax, u_specularIntensity, 0, 1);
 }`,
 };
 

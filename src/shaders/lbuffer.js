@@ -17,7 +17,7 @@ precision mediump float;
 
 uniform sampler2D u_albedoTexture;
 uniform sampler2D u_normalTexture;
-uniform sampler2D u_shininessTexture;
+uniform sampler2D u_specularTexture;
 
 uniform float u_resolutionX;
 uniform float u_resolutionY;
@@ -29,7 +29,7 @@ void main() {
 
   vec4 albedo = texture(u_albedoTexture, texcoord);
   vec4 normal = texture(u_normalTexture, texcoord);
-  vec4 shininess = texture(u_shininessTexture, texcoord);
+  vec4 specular = texture(u_specularTexture, texcoord);
 
   finalColor = albedo;
 }`,

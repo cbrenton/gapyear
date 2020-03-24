@@ -12,6 +12,8 @@ export class Material {
       ambient: defaultColor,
     };
     this.shininess = 10.0;
+    this.shininessMax = 1000.0;
+    this.specularIntensity = 0.0;
     this.isTextured = false;
     this.texture = null;
   }
@@ -22,6 +24,7 @@ export class Material {
     this.color.specular = color;
     this.color.ambient = color;
     this.shininess = Math.random() * 99.0 + 1.0;
+    this.specularIntensity = Math.random() > 0.5 ? 1.0 : 0.0;
   }
 
   setAllColors(color) {
@@ -36,6 +39,8 @@ export class Material {
       u_specularColor: this.color.specular,
       u_ambientColor: this.color.ambient,
       u_shininess: this.shininess,
+      u_shininessMax: this.shininessMax,
+      u_specularIntensity: this.specularIntensity,
     };
 
     if (this.isTextured) {
