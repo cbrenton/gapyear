@@ -53,8 +53,16 @@ export class SceneManager {
    */
   addBufferAttachmentsToHUD(buffer) {
     for (let el in buffer.colorAttachments) {
-      this.hud.addElement(buffer.colorAttachments[el]);
+      this.addTextureToHUD(buffer.colorAttachments[el]);
     }
-    this.hud.addElement(buffer.depthAttachment);
+    this.addTextureToHUD(buffer.depthAttachment);
+  }
+
+  /**
+   * Add a single color or depth attachment as a HUD element.
+   * @param {WebGLTexture} texture
+   */
+  addTextureToHUD(texture) {
+    this.hud.addElement(texture);
   }
 }
