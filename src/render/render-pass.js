@@ -5,7 +5,6 @@ import {TextureManager} from 'managers/texture-manager.js';
 export class RenderPass {
   constructor(
       renderTarget, programInfo, renderables, camera, setUpFunc, tearDownFunc,
-      // setUpPreBindFunc = function() {}, tearDownPreBindFunc = function() {},
       extraUniforms = {}) {
     this.renderables = renderables;
     this.programInfo = programInfo;
