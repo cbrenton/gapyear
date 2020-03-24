@@ -107,7 +107,7 @@ function createWall(planeTransform) {
   m4.translate(planeTransform, [0, -10, 0], planeTransform);
   m4.scale(planeTransform, [20, 20, 20], planeTransform);
   const planeMat = new Material();
-  planeMat.addTexture(TextureManager.texture('checkerboardTexture'));
+  planeMat.addTexture(TextureManager.texture('uvcheck'));
   return new Primitive(gl, 'plane', planeMat, planeTransform);
 }
 
@@ -116,7 +116,7 @@ function createRingOfSpheres(gl, graph, startY, numSpheres, radius) {
     const sphereTransform = m4.identity();
 
     const sphereMat = new Material();
-    sphereMat.randomize();
+    sphereMat.addTexture(TextureManager.texture('uvcheck'));
     const sphere = new Primitive(gl, 'sphere', sphereMat, sphereTransform);
     sphere.update = function(t) {
       const y = startY + Math.cos(Math.PI * (t / 1000) % 4000);

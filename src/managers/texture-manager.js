@@ -63,6 +63,22 @@ function createTextures(gl) {
 
   textures.blankTexture = blankTexture;
 
+  // Load uv checker texture
+  // @TODO: add support for loading multiple textures
+  const imgTexture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, imgTexture);
+  gl.texImage2D(
+      gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+      new Uint8Array([0x00, 0x00, 0xFF, 0xFF]));
+  var image = new Image();
+  image.src = 'resources/uvcheck.png';
+  image.addEventListener('load', function() {
+    gl.bindTexture(gl.TEXTURE_2D, imgTexture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+    gl.generateMipmap(gl.TEXTURE_2D);
+  });
+  textures.uvcheck = imgTexture;
+
   gl.bindTexture(gl.TEXTURE_2D, null);
 
   return textures;
