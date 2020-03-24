@@ -12,6 +12,7 @@ let frameIndex = 0;  // Index of the current frame
 /**
  * Add the current render time to the circular buffer and return the current
  * average render time.
+ * @return time since last frame
  */
 export function logFrame(textContext) {
   // Get current time
@@ -47,6 +48,7 @@ export function logFrame(textContext) {
     const renderTimeSoFar = nTimeSum / frameIndex;
     drawFPS(textContext, renderTimeSoFar.toFixed(2));
   }
+  return diff;
 }
 
 function drawFPS(ctx, renderTime) {

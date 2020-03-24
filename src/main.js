@@ -25,7 +25,7 @@ window.onload = function() {
  *     render() method
  */
 function drawFrame(gl, overlay, hud, renderer) {
-  logFrame(overlay);
+  const deltaT = logFrame(overlay);
 
   hud.enabled = window.showHUD;
 
