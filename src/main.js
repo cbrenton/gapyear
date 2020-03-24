@@ -3,7 +3,7 @@
 import * as util from 'util/scene-helpers.js';
 import {logFrame} from 'util/fps-counter.js';
 import {createSimpleScene} from 'builders/simple-scene-builder.js';
-import {createDeferredRenderer} from 'builders/deferred-pass-builder.js';
+import {createDeferredRenderer} from 'builders/deferred-renderer-builder.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
 
 window.onload = function() {
