@@ -68,7 +68,7 @@ function createLights(gl, graph) {
   }
 }
 
-function createGeometry(gl, graph, textures) {
+function createGeometry(gl, graph) {
   const numCubes = 0;
   for (let i = 0; i < numCubes; ++i) {
     const cubeTransform = randomTransform(0.0, 0.0);
