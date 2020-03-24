@@ -22,11 +22,23 @@ export function createSimpleScene(gl) {
   return graph;
 }
 
+// Assign an update(t) function to SceneManager
+SceneManager.prototype.update =
+    function(t) {
+  const secondsPerRotation = 60.0;
+  const rotationsPerMs = 1.0 / secondsPerRotation / 1000;
+  const rotationRadians = rotationsPerMs * 2 * Math.PI * t;
+  const camera = this.cameras[0];
+  camera.transform = m4.identity();
+  m4.rotateY(camera.transform, rotationRadians, camera.transform);
+  m4.translate(camera.transform, v3.create(0, 4, 8), camera.transform);
+}
+
 function createCameras(gl, graph) {
   const aspect =
       parseFloat(gl.canvas.clientWidth) / parseFloat(gl.canvas.clientHeight);
   const fovDegrees = 45.0;
-  const eye = [0, 1, 10];
+  const eye = [0, 0, 0];
   const target = [0, 0, 0];
   const up = [0, 1, 0];
 

@@ -10,28 +10,31 @@ window.onload = function() {
   window.showHUD = true;
   const gl = GLContextManager.gl;
   const overlay = util.getOverlay();
-  const scene = createSimpleScene(gl);
-  const renderer = createDeferredRenderer(gl, scene);
+  const sceneManager = createSimpleScene(gl);
+  const renderer = createDeferredRenderer(gl, sceneManager);
   const counter = new FPSCounter(overlay);
-  drawFrame(gl, scene.hud, renderer, counter);
+  drawFrame(gl, sceneManager, renderer, counter);
 };
 
 /**
  * Draw a single frame to the screen and request another.
  * @param {WebGL2RenderingContext} gl the webgl context
+ * @param {SceneGraph} graph
  * @param {OverlayGrid} hud the scene's HUD container, for enabling
  * @param {Object} renderer an object with an array of RenderPasses and a
  *     render() method
  * @param {FPSCounter} counter
  */
-function drawFrame(gl, hud, renderer, counter) {
+function drawFrame(gl, sceneManager, renderer, counter) {
   counter.logFrame();
 
-  hud.enabled = window.showHUD;
+  sceneManager.hud.enabled = window.showHUD;
+
+  sceneManager.update(counter.timeSinceStart());
 
   renderer.render();
 
   requestAnimationFrame(function() {
-    drawFrame(gl, hud, renderer, counter);
+    drawFrame(gl, sceneManager, renderer, counter);
   });
 }
