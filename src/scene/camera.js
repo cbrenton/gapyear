@@ -20,6 +20,8 @@ export class Camera {
     this.near = 0.1;
     this.far = 100.0;
     this.tag = 'camera';
+    this.transform = m4.identity();
+    this.targetTransform = m4.identity();
   }
 
   get position() {
@@ -33,7 +35,9 @@ export class Camera {
   get viewMatrix() {
     // m4.lookAt creates a camera matrix, not a view matrix. This needs to be
     // inverted to turn it into a view matrix
-    return m4.inverse(m4.lookAt(this.position, this.target, this.up));
+    return m4.inverse(m4.lookAt(
+        m4.transformPoint(this.transform, this.position),
+        m4.transformPoint(this.targetTransform, this.target), this.up));
   }
 
   get projMatrix() {
