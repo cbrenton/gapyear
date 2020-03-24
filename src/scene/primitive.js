@@ -21,7 +21,8 @@ export class Primitive extends RenderableInterface {
         this.bufferInfo = primitives.createCubeBufferInfo(this.gl, 1);
         break;
       case 'sphere':
-        this.bufferInfo = primitives.createSphereBufferInfo(this.gl, 1, 24, 12);
+        this.bufferInfo =
+            primitives.createSphereBufferInfo(this.gl, 0.5, 24, 12);
         break;
       case 'plane':
         this.bufferInfo = primitives.createPlaneBufferInfo(this.gl, 1, 1);
