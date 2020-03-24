@@ -62,8 +62,8 @@ function createLights(gl, graph) {
     const x = -3 + lightNdx * 3;
     const lightPos = v3.create(x, 0, -4);
     const lightColor = lights[lightNdx];
-    const lightSize = 3.0;
-    const light = new Light(gl, lightPos, lightSize, lightColor);
+    const lightRadius = 3.0;
+    const light = new Light(gl, lightPos, lightRadius, lightColor);
     graph.addLight(light);
   }
 }
