@@ -46,12 +46,14 @@ function addPassResultsToOverlay(renderPasses, sceneManager) {
  * @return {RenderPass}
  */
 function createGBufferPass(gl, sceneManager) {
-  const attachments = ['albedo', 'normal', 'specular'];
+  const attachments = ['albedo', 'normal', 'specular', 'position'];
   const gBufferTarget = new BufferTarget(
       gl, gl.canvas.clientWidth, gl.canvas.clientHeight, attachments);
 
   const setUp = function() {
-    gl.clearColor(0.58, 0.78, 0.85, 1);
+    // Doesn't really matter, but we'll set it for now since
+    // the position buffer makes things kinda nasty
+    gl.clearColor(0, 0, 0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.DEPTH_TEST);
   };
@@ -79,6 +81,7 @@ function createLBufferPass(gl, sceneManager, gbuffer) {
   const setUp = function() {
     gl.enable(gl.CULL_FACE);
     gl.cullFace(gl.FRONT);
+    gl.clearColor(0, 0, 0, 1);
     gl.clearColor(0.58, 0.78, 0.85, 1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.DEPTH_TEST);
@@ -93,6 +96,7 @@ function createLBufferPass(gl, sceneManager, gbuffer) {
     u_albedoTexture: gbuffer.colorAttachments.albedo,
     u_normalTexture: gbuffer.colorAttachments.normal,
     u_specularTexture: gbuffer.colorAttachments.specular,
+    u_positionTexture: gbuffer.colorAttachments.position,
   };
 
   const lBufferPass = new RenderPass(
