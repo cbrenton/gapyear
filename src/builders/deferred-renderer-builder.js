@@ -35,8 +35,10 @@ function createPasses(gl, sceneManager) {
 
 function addPassResultsToOverlay(renderPasses, sceneManager) {
   sceneManager.addBufferAttachmentsToHUD(renderPasses[0].renderTarget)
+  sceneManager.addTextureToHUD(
+      renderPasses[1].renderTarget.colorAttachments.lightGeometry);
   sceneManager.addScreenAlignedQuad(
-      renderPasses[1].renderTarget.colorAttachments.result);
+      renderPasses[1].renderTarget.colorAttachments.lightingResult);
 }
 
 /**
@@ -74,7 +76,7 @@ function createGBufferPass(gl, sceneManager) {
  * @return {RenderPass}
  */
 function createLBufferPass(gl, sceneManager, gbuffer) {
-  const attachments = ['result'];
+  const attachments = ['lightingResult', 'lightGeometry'];
   const lBufferTarget = new BufferTarget(
       gl, gl.canvas.clientWidth, gl.canvas.clientHeight, attachments);
 

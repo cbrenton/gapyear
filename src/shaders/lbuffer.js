@@ -22,7 +22,8 @@ uniform sampler2D u_specularTexture;
 uniform float u_resolutionX;
 uniform float u_resolutionY;
 
-out vec4 finalColor;
+layout(location = 0) out vec4 lightingResult;
+layout(location = 1) out vec4 lightGeometry;
 
 void main() {
   vec2 texcoord = vec2(gl_FragCoord.x / u_resolutionX, gl_FragCoord.y / u_resolutionY);
@@ -31,7 +32,8 @@ void main() {
   vec4 normal = texture(u_normalTexture, texcoord);
   vec4 specular = texture(u_specularTexture, texcoord);
 
-  finalColor = albedo;
+  lightingResult = albedo;
+  lightGeometry = vec4(1, 1, 1, 1);
 }`,
 };
 
