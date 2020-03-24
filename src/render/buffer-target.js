@@ -53,9 +53,11 @@ export class BufferTarget extends RenderTargetInterface {
       const attachmentName = colorAttachments[i];
       const tex = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, tex);
+      // @TODO: revert this to RGB, RGB, UNSIGNED_FLOAT once I remove position
+      // buffer, then update to RGBA when I consolidate g-buffer attachments
       gl.texImage2D(
-          gl.TEXTURE_2D, 0, gl.RGB, this.width, this.height, 0, gl.RGB,
-          gl.UNSIGNED_BYTE, null);
+          gl.TEXTURE_2D, 0, gl.RGBA16F, this.width, this.height, 0, gl.RGBA,
+          gl.FLOAT, null);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.framebufferTexture2D(
