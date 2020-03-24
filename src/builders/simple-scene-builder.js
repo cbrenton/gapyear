@@ -117,6 +117,7 @@ function createRingOfSpheres(gl, graph, startY, numSpheres, radius) {
 
     const sphereMat = new Material();
     sphereMat.addTexture(TextureManager.texture('uvcheck'));
+    sphereMat.randomizeSpecular();
     const sphere = new Primitive(gl, 'sphere', sphereMat, sphereTransform);
     sphere.update = function(t) {
       const y = startY + Math.cos(Math.PI * (t / 1000) % 4000);

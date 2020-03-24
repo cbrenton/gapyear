@@ -23,6 +23,10 @@ export class Material {
     this.color.diffuse = color;
     this.color.specular = color;
     this.color.ambient = color;
+    this.randomizeSpecular();
+  }
+
+  randomizeSpecular() {
     this.shininess = Math.random() * 99.0 + 1.0;
     this.specularIntensity = Math.random() > 0.5 ? 1.0 : 0.0;
   }
