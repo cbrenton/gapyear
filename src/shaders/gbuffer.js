@@ -13,8 +13,6 @@ uniform vec3 u_cameraPos;
 uniform vec3 u_lightPos;
 
 out vec3 v_normal;
-out vec3 v_surfToLight;
-out vec3 v_viewVec;
 out vec2 v_texcoord;
 
 void main() {
@@ -24,9 +22,6 @@ void main() {
   mat4 modelInverseTranspose = transpose(inverse(u_modelMatrix));
   v_normal = mat3(modelInverseTranspose) * normal;
 
-  vec3 surfaceWorldPos = vec3(u_modelMatrix * position);
-  v_surfToLight = u_lightPos - surfaceWorldPos;
-  v_viewVec = u_cameraPos - surfaceWorldPos;
   v_texcoord = texcoord;
 }`,
   fs: `#version 300 es
