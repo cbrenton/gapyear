@@ -32,6 +32,12 @@ SceneManager.prototype.update =
   camera.transform = m4.identity();
   m4.rotateY(camera.transform, rotationRadians, camera.transform);
   m4.translate(camera.transform, v3.create(0, 4, 8), camera.transform);
+
+  for (const el of this.geometry.main) {
+    if (el.update !== undefined) {
+      el.update(t);
+    }
+  }
 }
 
 function createCameras(gl, graph) {

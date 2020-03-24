@@ -5,7 +5,15 @@ import {m4} from 'twgl.js';
 export class RenderableInterface {
   constructor(gl, initialTransform = m4.identity()) {
     this.gl = gl;
-    this.initialTransform = initialTransform;
+    this.transform = initialTransform;
+  }
+
+  set update(func) {
+    this.updateFunc_ = func;
+  }
+
+  get update() {
+    return this.updateFunc_;
   }
 
   /**

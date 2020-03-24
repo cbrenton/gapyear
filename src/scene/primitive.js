@@ -34,12 +34,6 @@ export class Primitive extends RenderableInterface {
     this.material = material;
   }
 
-  // @TODO: eventually replace this with transform(t) overridden from Renderable
-  // interface
-  get transform() {
-    return this.initialTransform;
-  }
-
   get uniforms() {
     const uniforms = {
       u_modelMatrix: this.transform,
