@@ -54,12 +54,13 @@ function createCameras(gl, graph) {
 
 function createLights(gl, graph) {
   const lights = {
-    // 0: v3.create(1, 0, 0),
+    0: v3.create(1, 0, 0),
     1: v3.create(0, 1, 0),
-    // 2: v3.create(0, 0, 1),
+    2: v3.create(0, 0, 1),
   };
   for (const lightNdx in lights) {
-    const lightPos = v3.create(-3 + lightNdx * 3, 0, -4);
+    const x = -3 + lightNdx * 3;
+    const lightPos = v3.create(x, 0, -4);
     const lightColor = lights[lightNdx];
     const lightSize = 3.0;
     const light = new Light(gl, lightPos, lightSize, lightColor);
@@ -68,8 +69,6 @@ function createLights(gl, graph) {
 }
 
 function createGeometry(gl, graph, textures) {
-  const checkerboardTexture = TextureManager.texture('checkerboardTexture');
-
   const numCubes = 0;
   for (let i = 0; i < numCubes; ++i) {
     const cubeTransform = randomTransform(0.0, 0.0);
@@ -80,22 +79,51 @@ function createGeometry(gl, graph, textures) {
     graph.addGeom(cube);
   }
 
-  const numSpheres = 10;
+  for (let level = 0; level < 4; ++level) {
+    const y = -0.5;
+    const numSpheres = 8 * level || 1;
+    const radius = 2 * level;
+    createRingOfSpheres(gl, graph, y, numSpheres, radius);
+  }
+
+  const xRotations = [0, Math.PI, Math.PI / 2, 3 * Math.PI / 2];
+  const zRotations = [Math.PI / 2, 3 * Math.PI / 2];
+  for (let rotation of xRotations) {
+    const planeTransform = m4.identity();
+    m4.rotateX(planeTransform, rotation, planeTransform);
+    const plane = createWall(planeTransform);
+    graph.addGeom(plane);
+  }
+
+  for (let rotation of zRotations) {
+    const planeTransform = m4.identity();
+    m4.rotateZ(planeTransform, rotation, planeTransform);
+    const plane = createWall(planeTransform);
+    graph.addGeom(plane);
+  }
+}
+
+function createWall(planeTransform) {
+  m4.translate(planeTransform, [0, -10, 0], planeTransform);
+  m4.scale(planeTransform, [20, 20, 20], planeTransform);
+  const planeMat = new Material();
+  planeMat.addTexture(TextureManager.texture('checkerboardTexture'));
+  return new Primitive(gl, 'plane', planeMat, planeTransform);
+}
+
+function createRingOfSpheres(gl, graph, startY, numSpheres, radius) {
   for (let i = 0; i < numSpheres; ++i) {
     const sphereTransform = m4.identity();
-    m4.translate(
-        sphereTransform, v3.create(-10 + i * 2, 0, -4), sphereTransform);
+
     const sphereMat = new Material();
     sphereMat.randomize();
     const sphere = new Primitive(gl, 'sphere', sphereMat, sphereTransform);
+    sphere.update = function(t) {
+      const y = startY + Math.cos(Math.PI * (t / 1000) % 4000);
+      this.transform = m4.identity();
+      m4.rotateY(this.transform, 2 * i * Math.PI / numSpheres, this.transform);
+      m4.translate(this.transform, v3.create(0, y, radius), this.transform);
+    };
     graph.addGeom(sphere);
   }
-
-  const planeTransform = m4.translation([0, -1, 0]);
-  m4.scale(planeTransform, [20, 20, 20], planeTransform);
-  const planeMat = new Material();
-  planeMat.randomize('monochrome');
-  planeMat.addTexture(checkerboardTexture);
-  const plane = new Primitive(gl, 'plane', planeMat, planeTransform);
-  graph.addGeom(plane);
 }
