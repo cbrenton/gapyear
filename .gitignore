@@ -103,4 +103,7 @@ dist
 # TernJS port file
 .tern-port
 
+# OSX
+**/.DS_Store
+
 public/js/bundle.js
