@@ -27,7 +27,7 @@ export class Material {
   }
 
   randomizeSpecular() {
-    this.shininess = Math.random() * 99.0 + 1.0;
+    this.shininess = Math.random() * 200.0 + 10.0;
     this.specularIntensity = Math.random() > 0.5 ? 1.0 : 0.0;
   }
 
