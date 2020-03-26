@@ -54,15 +54,15 @@ function createCameras(gl, graph) {
 
 function createLights(gl, graph) {
   const lights = {
-    0: v3.create(1, 0, 0),
-    1: v3.create(0, 1, 0),
-    2: v3.create(0, 0, 1),
+    0: v3.create(1, 0.5, 0.5),
+    1: v3.create(0.5, 1, 0.5),
+    2: v3.create(1, 1, 1),
   };
   for (const lightNdx in lights) {
     const x = -3 + lightNdx * 3;
-    const lightPos = v3.create(x, 0, -4);
+    const lightPos = v3.create(x, 0, 0);
     const lightColor = lights[lightNdx];
-    const lightRadius = 3.0;
+    const lightRadius = 5.0;
     const light = new Light(gl, lightPos, lightRadius, lightColor);
     graph.addLight(light);
   }
