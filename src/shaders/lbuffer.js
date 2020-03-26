@@ -86,7 +86,7 @@ vec3 shade(vec2 texcoord) {
 }
 
 void main() {
-  lightGeometry = vec4(1, 1, 1, 1);
+  lightGeometry = vec4(u_lightColor, 1);
 
   vec2 texcoord = vec2(gl_FragCoord.x / u_resolutionX,
     gl_FragCoord.y / u_resolutionY);
