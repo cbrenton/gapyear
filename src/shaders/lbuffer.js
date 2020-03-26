@@ -23,6 +23,9 @@ uniform vec3 u_lightPos;
 uniform vec3 u_lightColor;
 uniform float u_lightRadius;
 uniform float u_shininessMax;
+uniform float u_lightConstant;
+uniform float u_lightLinear;
+uniform float u_lightQuadratic;
 
 uniform sampler2D u_albedoTexture;
 uniform sampler2D u_normalTexture;
@@ -58,12 +61,8 @@ vec3 lightContrib(
 }
 
 float getAttenuation(float distance) {
-  float constant = 1.0;
-  float linear = 0.7;
-  float quadratic = 1.8;
-  float attenuation = 1.0 / (constant + linear * distance +
-    quadratic * (distance * distance));
-  return attenuation;
+  return 1.0 / (u_lightConstant + u_lightLinear * distance +
+    u_lightQuadratic * (distance * distance));
 }
 
 vec3 shade(vec2 texcoord) {
@@ -73,6 +72,7 @@ vec3 shade(vec2 texcoord) {
   float shininess = texture(u_specularTexture, texcoord).x;
   float specularIntensity = texture(u_specularTexture, texcoord).y;
   vec3 fragToLight = u_lightPos - fragWorld;
+  
   vec3 contrib = lightContrib(
     fragWorld,
     fragToLight,
@@ -82,9 +82,7 @@ vec3 shade(vec2 texcoord) {
     specularIntensity,
     u_lightColor);
 
-  float distance = length(fragToLight);
-  float attenuation = distance / u_lightRadius;
-  return contrib * attenuation;
+  return contrib * getAttenuation(length(fragToLight));
 }
 
 void main() {
