@@ -59,13 +59,17 @@ function createLights(gl, graph) {
     2: v3.create(1, 1, 1),
   };
   for (const lightNdx in lights) {
-    const x = -3 + lightNdx * 3;
+    const x = -5 + lightNdx * 5;
     const lightPos = v3.create(x, 0, 0);
     const lightColor = lights[lightNdx];
     const lightRadius = 20.0;
     const light = new Light(gl, lightPos, lightRadius, lightColor);
     graph.addLight(light);
   }
+
+  const directionalLight =
+      new Light(gl, v3.create(0, 10, 0), 200.0, v3.create(1, 1, 1));
+  graph.addLight(directionalLight);
 }
 
 function createGeometry(gl, graph) {
