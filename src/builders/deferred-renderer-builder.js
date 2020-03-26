@@ -35,8 +35,6 @@ function createPasses(gl, sceneManager) {
 
 function addPassResultsToOverlay(renderPasses, sceneManager) {
   sceneManager.addBufferAttachmentsToHUD(renderPasses[0].renderTarget)
-  sceneManager.addTextureToHUD(
-      renderPasses[1].renderTarget.colorAttachments.lightGeometry);
   sceneManager.addScreenAlignedQuad(
       renderPasses[1].renderTarget.colorAttachments.lightingResult);
 }

@@ -7,7 +7,7 @@ import {createDeferredRenderer} from 'builders/deferred-renderer-builder.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
 
 window.onload = function() {
-  window.showHUD = true;
+  window.showHUD = false;
   const gl = GLContextManager.gl;
   const overlay = util.getOverlay();
   const sceneManager = createSimpleScene(gl);
