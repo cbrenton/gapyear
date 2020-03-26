@@ -15,25 +15,99 @@ void main() {
   fs: `#version 300 es
 precision mediump float;
 
+uniform float u_resolutionX;
+uniform float u_resolutionY;
+
+uniform vec3 u_cameraPos;
+uniform vec3 u_lightPos;
+uniform vec3 u_lightColor;
+uniform float u_lightRadius;
+uniform float u_shininessMax;
+
 uniform sampler2D u_albedoTexture;
 uniform sampler2D u_normalTexture;
 uniform sampler2D u_specularTexture;
-
-uniform float u_resolutionX;
-uniform float u_resolutionY;
+uniform sampler2D u_positionTexture;
 
 layout(location = 0) out vec4 lightingResult;
 layout(location = 1) out vec4 lightGeometry;
 
+vec3 lightContrib(
+    vec3 surfaceWorldPos,
+    vec3 surfToLight,
+    vec3 normal,
+    vec3 albedo,
+    float shininess,
+    float specularIntensity,
+    vec3 lightColor) {
+  vec3 L = normalize(surfToLight);
+  vec3 N = normalize(normal);
+  vec3 V = normalize(u_cameraPos - surfaceWorldPos);
+
+  // Diffuse
+  vec3 diffuse = lightColor * max(dot(L, N), 0.0) * albedo;
+
+  // Specular (Blinn-Phong)
+  vec3 H = normalize(V + L);
+  float scaledShininess = shininess * u_shininessMax;
+  vec3 specular = lightColor * specularIntensity;
+  specular *= pow(max(dot(H, N), 0.0), scaledShininess);
+
+  vec3 result = diffuse + specular;
+  return result;
+}
+
+float getAttenuation(float distance) {
+  float constant = 1.0;
+  float linear = 0.7;
+  float quadratic = 1.8;
+  float attenuation = 1.0 / (constant + linear * distance +
+    quadratic * (distance * distance));
+  return attenuation;
+}
+
+vec3 shade(vec2 texcoord) {
+  vec3 fragWorld = texture(u_positionTexture, texcoord).xyz;
+  vec3 normal = texture(u_normalTexture, texcoord).xyz;
+  vec3 albedo = texture(u_albedoTexture, texcoord).xyz;
+  float shininess = texture(u_specularTexture, texcoord).x;
+  float specularIntensity = texture(u_specularTexture, texcoord).y;
+  vec3 fragToLight = u_lightPos - fragWorld;
+  vec3 contrib = lightContrib(
+    fragWorld,
+    fragToLight,
+    normal,
+    albedo,
+    shininess,
+    specularIntensity,
+    u_lightColor);
+
+  float distance = length(fragToLight);
+  float attenuation = distance / u_lightRadius;
+  return contrib * attenuation;
+}
+
 void main() {
-  vec2 texcoord = vec2(gl_FragCoord.x / u_resolutionX, gl_FragCoord.y / u_resolutionY);
-
-  vec4 albedo = texture(u_albedoTexture, texcoord);
-  vec4 normal = texture(u_normalTexture, texcoord);
-  vec4 specular = texture(u_specularTexture, texcoord);
-
-  lightingResult = albedo;
   lightGeometry = vec4(1, 1, 1, 1);
+
+  vec2 texcoord = vec2(gl_FragCoord.x / u_resolutionX,
+    gl_FragCoord.y / u_resolutionY);
+
+  vec3 lightWorldPos = u_lightPos;
+  vec3 fragWorldPos = texture(u_positionTexture, texcoord).xyz;
+  vec3 fragToLightVec = fragWorldPos - lightWorldPos;
+
+  // @NOTE: this is SUPER SUPER hacky. this needs to go asap but
+  // I'm leaving it in to get the first pass working
+  if (fragWorldPos.z != 0.0) {
+    // If inside light's area of influence, shade the fragment
+    if (length(fragToLightVec) <= u_lightRadius) {
+      lightingResult = vec4(shade(texcoord), 0.5);
+      return;
+    } else {
+      lightingResult = vec4(0, 0, 0, 1);
+    }
+  }
 }`,
 };
 
