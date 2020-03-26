@@ -5,7 +5,7 @@ import {createGLCanvas} from 'util/scene-helpers.js';
 export const GLContextManager = {
   init_: function() {
     if (this.gl_ === undefined) {
-      this.gl_ = createGLCanvas('GAPYEAR');
+      this.gl_ = createGLCanvas();
       // @TODO: remove this once I remove position buffer
       const ext = gl.getExtension('EXT_color_buffer_float');
       if (!ext) {
