@@ -23,27 +23,28 @@ A deferred rendering engine in WebGL.
 
 ### L-buffer
 - [x] Render a sphere to FBO for a single point light (debug).
-- [ ] Pass a single texture from g-buffer to l-buffer.
-- [ ] Render all geometry in light's sphere of influence as white to FBO (debug).
-- [ ] Render diffuse to l-buffer FBO.
-- [ ] Render specular to l-buffer FBO.
-- [ ] Accumulate diffuse and specular for each light to create final image.
+- [x] Pass a single texture from g-buffer to l-buffer.
+- [x] Render all geometry in light's sphere of influence as white to FBO (debug).
+- [x] Render diffuse to l-buffer FBO.
+- [x] Render specular to l-buffer FBO.
+- [x] Accumulate diffuse and specular for each light to create final image.
 
 ### Final pass
 - [x] Render textured quad to screen.
 
 ### Other stuff
-- [ ] Add specular intensity to Material class.
-- [ ] Add specular intensity to Phong calculation.
+- [x] Add specular intensity to Material class.
+- [x] Add specular intensity to Phong calculation.
+- [ ] Remove position from g-buffer and recalculate using depth instead.
 - [ ] Pack g-buffer info into 2 textures instead of 3 (diffuse.rgb + specular intensity, normal.xyz + shininess).
 - [ ] Integrate basic obj file loader (parse-obj.js from webgl-hello).
 - [ ] Add obj file to scene graph.
 - [ ] Add some heirarchical model to scene graph.
 - [ ] Integrate key capture library (maybe keypress).
 - [ ] Add multiple cameras, with the ability to switch between them using keystrokes.
-- [ ] Animate some of the objects.
-- [ ] Change lighting to Blinn-Phong.
-- [ ] Grok Blinn-Phong differences enough to validate that it's working as expected.
+- [x] Animate some of the objects.
+- [x] Change lighting to Blinn-Phong.
+- [x] Grok Blinn-Phong differences enough to validate that it's working as expected.
 - [ ] Add Fresnel factor to specular lighting.
 - [ ] Add per-pixel fog using g-buffer depth.
 - [ ] Add SSAO.
