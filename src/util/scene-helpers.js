@@ -1,7 +1,7 @@
 import {randomColor as randomAttractiveColor} from 'randomcolor/randomColor.js';
 import * as twgl from 'twgl.js';
 
-window.showHUD = false;
+window.showGBufferData = false;
 
 const m4 = twgl.m4;
 const v3 = twgl.v3;

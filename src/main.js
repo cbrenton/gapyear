@@ -8,9 +8,9 @@ import {GLContextManager} from 'managers/gl-context-manager.js';
 import * as dat from 'dat.gui';
 
 window.onload = function() {
-  window.showHUD = false;
+  window.showGBufferData = false;
   var gui = new dat.GUI();
-  gui.add(window, 'showHUD');
+  gui.add(window, 'showGBufferData');
   const gl = GLContextManager.gl;
   const overlay = util.getOverlay();
   const sceneManager = createSimpleScene(gl);
@@ -31,7 +31,7 @@ window.onload = function() {
 function drawFrame(gl, sceneManager, renderer, counter) {
   counter.logFrame();
 
-  sceneManager.hud.enabled = window.showHUD;
+  sceneManager.hud.enabled = window.showGBufferData;
 
   sceneManager.update(counter.timeSinceStart());
 
