@@ -5,9 +5,12 @@ import {FPSCounter} from 'util/fps-counter.js';
 import {createSimpleScene} from 'builders/simple-scene-builder.js';
 import {createDeferredRenderer} from 'builders/deferred-renderer-builder.js';
 import {GLContextManager} from 'managers/gl-context-manager.js';
+import * as dat from 'dat.gui';
 
 window.onload = function() {
   window.showHUD = false;
+  var gui = new dat.GUI();
+  gui.add(window, 'showHUD');
   const gl = GLContextManager.gl;
   const overlay = util.getOverlay();
   const sceneManager = createSimpleScene(gl);
