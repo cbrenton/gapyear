@@ -6,7 +6,7 @@ import includePaths from 'rollup-plugin-includepaths';
 export default {
   input: 'src/main.js',
   output: {
-    file: 'public/js/bundle.js',
+    file: 'docs/js/bundle.js',
     format: 'iife',
   },
   plugins: [
